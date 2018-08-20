@@ -1,0 +1,38 @@
+body {
+	background-image: url(../img/BackGroundMaster.png);
+}
+
+li {
+	margin-left: 140px; 
+}
+
+.container-fluid {
+	margin-top: 50px;
+}
+
+.proposal-div {
+	margin-top: 22px;
+	margin-left: 5%;
+}
+
+.filter-div {
+	background-color: hsla(71, 14%, 85%, .9);
+	width: 400px;
+	margin-top: 0px;
+	margin-left: 20px;
+	border-radius: 5px;
+	border: 1px solid #494949;
+	padding: 10px 10px;
+}
+
+.btn-default,
+.filter-div button{	
+	background-color: #B7B7D6FF !important;
+	color: #494949 !important;
+	border: 1px solid #494949 !important;
+}
+
+.btn-default:hover,
+.filter-div button:hover {
+	background-color: #8787BAFF !important;
+}

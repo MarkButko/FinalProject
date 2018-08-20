@@ -1,0 +1,65 @@
+<!--before head -->
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta hhtp-equiv="pragma" content="no-cache" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet"	href="../css/bootstrap/bootstrap.min.css"	type="text/css">
+	<!--end before head -->
+
+	<link rel="stylesheet"	href="../css/main.css"	type="text/css">
+	<link rel="stylesheet"	href="../css/user.css"	type="text/css">
+	<link rel="stylesheet"	href="../css/comments.css"	type="text/css">
+	<title>Comments</title>
+
+	<!--after head -->
+</head>
+<body>
+
+	<!--nav  -->
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="#" class="navbar-brand">nav.site.name</a>
+			</div>
+			
+			<div class="menu">
+				<ul class="nav navbar-nav">
+					<li><a href="#" class="custom-underline">Leave proposal</a></li>
+					<li><a href="#" class="custom-underline">My proposals</a></li>
+					<li><a href="#" class="custom-underline active">Comments</a></li>
+					<hr />
+				</ul>
+			</div>
+
+
+			<div>
+				<form id="lang-form" class="form-inline">
+					<button class="btn btn-link" name="language" type="submit" value="en" ${language == 'en' ? 'selected' : ''}>EN</button> |
+					<button	class="btn btn-link" name="language" type="submit" value="ru" ${language == 'ru' ? 'selected' : ''}>RU</button>
+				</form>
+			</div>
+
+
+		</div>
+	</nav>
+	<!--nav  end-->
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-offset-2 col-md-6 comment-div">
+				<label>Author: Author Name</label>
+				<label class="date">Date</label>
+				<hr />
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat.</p>
+			</div>
+		</div>
+	</div>
+	<!--footer-->
+</body>
+</html>
+<!--end footer-->

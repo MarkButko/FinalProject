@@ -1,0 +1,133 @@
+<!--before head -->
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta hhtp-equiv="pragma" content="no-cache" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet"	href="../../css/bootstrap/bootstrap.min.css"	type="text/css">
+	<!--end efore head -->
+
+	<link rel="stylesheet"	href="../../css/main.css"	type="text/css">
+	<link rel="stylesheet"	href="../../css/proposal.css"	type="text/css">
+	<link rel="stylesheet"	href="../../css/manager.css"	type="text/css">
+	<title>Proposals</title>
+
+	<!--after head -->
+</head>
+<body>
+
+	<!--nav  -->
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container nav-container">
+
+			<div class="navbar-header">
+				<a href="#" class="navbar-brand">nav.site.name</a>
+			</div>
+
+			<div class="menu">
+				<ul class="nav navbar-nav">
+					<li><a href="#" class="custom-underline active">Proposals</a></li>
+					<li><a href="#" class="custom-underline">Comments</a></li>
+					<hr />
+				</ul>
+			</div>
+
+			<div id="logout-div">
+				<form action="logout">
+					<button type="submit" class="logout"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></button>
+				</form>
+			</div>
+
+			<form id="lang-form" class="form-inline">
+				<button class="btn btn-link" name="language" type="submit" value="en" ${language == 'en' ? 'selected' : ''}>EN</button> |
+				<button	class="btn btn-link" name="language" type="submit" value="ru" ${language == 'ru' ? 'selected' : ''}>RU</button>
+			</form>
+
+
+		</div>
+	</nav>
+	<!--nav  end-->
+	<div class="container-fluid">
+
+		<div class="row">
+			<div class="col-md-4" id="filter-container">
+				<br>
+				<div class="container filter-div  fixed">
+					<form name="filter" action="filter">
+
+						<label for="status-filter"> Status: </label>
+						<select name="status_filter" class="form-control">
+							<option value="${status}">status</option>
+						</select>
+
+						<div class="form-group">
+							<label for="date"> Date:	</label>
+							<div class="form-inline" id="date">
+								<input type="date" name="date_from" class="form-control" placeholder="From" value="${date_from}"> <input type="date"
+								name="date_to" class="form-control" placeholder="To" value="${date_to}">
+							</div>
+						</div>
+
+						<button type="submit" class="btn btn-default">
+							submit.filter
+						</button>
+					</form>
+				</div>
+			</div>
+
+
+
+			<div class="col-md-8">
+				<div class="proposal-div">
+					<label class="date">Date</label>
+					<label>Status</label>
+					<hr />
+					<p>Author: Author Name</p>
+					<p>Manager: Manager Name</p>
+					<p>Master: Master Name</p>
+					<hr />
+					<h4>Proposal text:</h4>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat.</p>
+					<hr />
+					<h4>Rejection cause:</h4>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum doloremque laboriosam vel ipsum neque quis iste minima, porro sit harum dicta repellat ipsam nam nostrum aliquid ad provident fugit labore!</p>
+					<h4>Price: price</h4>
+					<button type="button" onclick="accept()" id="modal-button-accept" class="btn btn-default btn-accept">Accept</button>
+					<button type="button" onclick="reject()" id="modal-button-reject" class="btn btn-default btn-reject">Reject</button>
+
+					<!-- Modal window for acceppting or rejecting proposal -->
+					<div class="modal-window">
+						<div id="modal-wrapper-accept" class="modal modal-wrapper-accept">
+							<div class="modal-content-accept">
+								<button type="button" class="close">&times;</button>
+								<form action="accept" method="POST">
+									<input type="text" name="price" min="0" placeholder="Price" />
+									<button class="btn btn-default btn-modal">Submit</button>
+								</form>
+							</div>
+						</div>
+
+						<div id="modal-wrapper-reject" class="modal modal-wrapper-reject">
+							<div class="modal-content-reject">
+								<button class="close">&times;</button>
+								<form action="reject" method="POST">
+									<textarea name="rejection_cause" placeholder="Rejection cause" ></textarea>
+									<button class="btn btn-default btn-modal">Submit</button>
+								</form>
+							</div>
+						</div>
+					</div>	
+				</div><!--  proposal-div end -->				
+			</div>			
+		</div>
+
+	</div>
+	<script type="text/javascript" src="../../script/modal.js"></script>
+	<!--footer-->
+</body>
+</html>
+<!--end footer-->

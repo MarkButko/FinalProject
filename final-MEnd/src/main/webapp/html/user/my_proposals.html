@@ -1,0 +1,90 @@
+<!--before head -->
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta hhtp-equiv="pragma" content="no-cache" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet"	href="../../css/bootstrap/bootstrap.min.css"	type="text/css">
+	<!--end efore head -->
+
+	<link rel="stylesheet"	href="../../css/main.css"	type="text/css">
+	<link rel="stylesheet"	href="../../css/user.css"	type="text/css">
+	<link rel="stylesheet"	href="../../css/proposal.css"	type="text/css">
+	<title>My proposals</title>
+
+	<!--after head -->
+</head>
+<body>
+
+	<!--nav  -->
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="#" class="navbar-brand">nav.site.name</a>
+			</div>
+			
+			<div class="menu">
+				<ul class="nav navbar-nav">
+					<li><a href="#" class="custom-underline">Leave proposal</a></li>
+					<li><a href="#" class="custom-underline active">My proposals</a></li>
+					<li><a href="#" class="custom-underline">Comments</a></li>
+					<hr />
+				</ul>
+			</div>
+
+			<div id="logout-div">
+				<form action="logout">
+					<button type="submit" class="logout"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></button>
+				</form>
+			</div>
+
+			<div>
+				<form id="lang-form" class="form-inline">
+					<button class="btn btn-link" name="language" type="submit" value="en" ${language == 'en' ? 'selected' : ''}>EN</button> |
+					<button	class="btn btn-link" name="language" type="submit" value="ru" ${language == 'ru' ? 'selected' : ''}>RU</button>
+				</form>
+			</div>
+
+
+		</div>
+	</nav>
+	<!--nav  end-->
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-offset-2 col-md-6 proposal-div">
+				<label class="date">Date</label>
+				<label>Status</label>
+				<hr />
+				<p>Author: Author Name</p>
+				<p>Manager: Manager Name</p>
+				<p>Master: Master Name</p>
+				<hr />
+				<h4>Proposal text:</h4>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+				consequat.</p>
+				<hr />
+				<h4>Rejection cause:</h4>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum doloremque laboriosam vel ipsum neque quis iste minima, porro sit harum dicta repellat ipsam nam nostrum aliquid ad provident fugit labore!</p>
+				<h4>Price: price</h4>
+
+				<!--showed  If already submittes by manager but not commented-->
+				<!-- if commented then hide button .hidden-->
+				<div class="comment-div">
+					<form action="comment" method="POST">
+						<div class="form-group">
+							<textarea name="comment" placeholder="Comment here" required></textarea>
+						</div>
+						<input type="submit" class="btn btn-default button-cool" value="Comment">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--footer-->
+</body>
+</html>
+<!--end footer-->

@@ -1,0 +1,25 @@
+.filter-div {
+	background-color: hsla(71, 14%, 85%, .9);
+	width: 400px;
+	margin-top: 0px;
+	margin-left: 20px;
+	border-radius: 5px;
+	border: 1px solid #494949;
+	padding: 10px 10px;
+}
+
+.filter-div button,
+.user-div button{	
+	background-color: #B7B7D6FF !important;
+	color: #494949 !important;
+	border: 1px solid #494949 !important;
+}
+
+.user-div button{
+	margin-top: 10px;
+}
+
+.filter-div button:hover,
+.user-div button:hover {
+	background-color: #8787BAFF !important;
+}

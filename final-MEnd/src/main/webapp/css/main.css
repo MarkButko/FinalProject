@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Raleway');
+
+body {
+	background-image: url(../img/BackGroundUser.png);
+	background-repeat: repeat;
+	font-family: "Lato";
+	font-size: 16px;
+	color: #373737;
+}
+
+h1, h2 {
+	font-family: "Raleway";
+	font-weight: 300;
+}
+
+select,
+select:active,
+select:focus,
+textarea,
+input,
+input:active,
+input:focus,
+button:active,
+button:focus,
+button{
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+select {
+	margin-left: 10px;
+	min-width: 50px;
+	max-width: 200px;
+	display: inline-block !important;
+}
+
+select + button {
+	display: block !important;
+}
+
+label {
+	font-weight: 200;
+}
+
+a {
+	font-weight: 200;
+	color: #daad86;
+}
+
+a:hover{
+	color: #A76733;
+}
+
+nav + div {
+	margin-top: 80px;
+}
+
+.block {
+	display: block;
+}
+
+.menu {
+	margin-left: 20%;
+}
+
+.button-cool {
+	background-color: #B7B7D6FF !important;
+	color: #494949 !important;
+	border: 1px solid #494949 !important;
+}
+
+.button-cool:hover {
+	background-color: #8787BAFF !important;
+}
+
+.hidden{
+	display:none;
+}
+
+.active {
+  background-color: #C4C4C4FF;
+}
+
+.centered {
+	text-align: center;
+}
+
+.form-group{
+	margin: 0 auto 15 auto;
+}
+
+.fixed {
+	position: fixed;
+}
+
+.custom-underline::after {
+  content: "";
+  position: absolute;
+  top: 80%;
+  height: 2px;
+  width: 0%;
+  left: 50%;
+  background-color: #494949;
+  transition: 0.4s ease-out all .1s;
+}
+
+li:hover .custom-underline::after {
+  width: 90%;
+  left: 5%;
+  transition: 0.5s ease all;
+}
+
+button.logout {
+	padding: 0px;
+	border: none;
+	background-color: white;
+}
+
+.glyphicon-log-out{
+	color:#494949;
+}
+
+.glyphicon-log-out:hover{
+	color: black;
+}
+
+#logout-div{
+	margin: 13px;
+	float: right;
+}
+
+#login-form {
+	background-color: hsla(30, 50%, 73%, .9);
+	border: 1px solid #494949;
+	width: 300px;
+	margin-top: 50px;
+	padding: 50px 10px;
+	border-radius: 5px;
+}
+
+#lang-form {
+	float: right;
+	margin: 6px;
+	margin-right: 15px;
+}
+
+#redirect-container {
+	margin-top: 10px;
+}
+
+#redirect {
+	border: 1px solid #494949;
+	background-color: #f4f4f4;
+	border-radius: 3px;
+	padding: 3px 6px;
+	width: 300px;
+}
+
+#sign-up-a{
+	float: right;
+	margin-right: 5px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+	color:#373737;
+	border-radius: 2px;
+	padding: 3px;
+	border: none;
+	background-color: #f4f4f4
+}
+
+input[type="submit"] {
+	color: #373737;
+}
+
+textarea {
+	color:#373737;
+	width: 450px;
+	height: 200px;
+	padding: 12px 20px;
+	border: none;
+	border-radius: 4px;
+	background-color: #f4f4f4;
+	resize: none;
+}

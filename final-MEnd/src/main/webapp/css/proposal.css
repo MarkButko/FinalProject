@@ -1,0 +1,17 @@
+.proposal-div {
+	background-color: hsla(71, 14%, 85%, .9);
+	width: 750px;
+	margin-top: 0px;
+	margin-bottom: 30px;
+	border-radius: 5px;
+	border: 1px solid #494949;
+	padding: 10px 10px;
+}
+
+.date {
+	margin-right: 40%;
+}
+
+hr {
+	margin: 5px;
+}

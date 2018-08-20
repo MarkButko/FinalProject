@@ -1,0 +1,94 @@
+<!--before head -->
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta hhtp-equiv="pragma" content="no-cache" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet"	href="../../css/bootstrap/bootstrap.min.css"	type="text/css">
+	<!--end efore head -->
+
+	<link rel="stylesheet"	href="../../css/main.css"	type="text/css">
+	<link rel="stylesheet"	href="../../css/filter.css"	type="text/css">
+	<link rel="stylesheet"	href="../../css/admin.css"	type="text/css">
+	<title>Roles</title>
+
+	<!--after head -->
+</head>
+<body>
+
+	<!--nav  -->
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+
+			<div class="navbar-header">
+				<a href="#" class="navbar-brand">nav.site.name</a>
+			</div>
+
+			<div id="logout-div">
+				<form action="logout">
+					<button type="submit" class="logout"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></button>
+				</form>
+			</div>
+
+			<div>
+				<form id="lang-form" class="form-inline">
+					<button class="btn btn-link" name="language" type="submit" value="en" ${language == 'en' ? 'selected' : ''}>EN</button> |
+					<button	class="btn btn-link" name="language" type="submit" value="ru" ${language == 'ru' ? 'selected' : ''}>RU</button>
+				</form>
+			</div>
+
+		</div>
+	</nav>
+	<!--nav  end-->
+	<div class="container-fluid">
+
+		<div class="row">
+			<div class="col-md-4" id="filter-container">
+				<div class="container filter-div  fixed">
+					<form name="filter" action="filter">
+						<div class="form-group">
+							<label for="role-filter"> Role: </label>
+							<select name="role_filter" class="form-control">
+								<option value="${role}">role</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label for="date"> Date of registration:	</label>
+							<div class="form-inline" id="date">
+								<input type="date" name="date_from" class="form-control" placeholder="From" value="${date_from}"> <input type="date"
+								name="date_to" class="form-control" placeholder="To" value="${date_to}">
+							</div>
+						</div>
+
+						<button type="submit" class="btn btn-default">
+							submit.filter
+						</button>
+					</form>
+				</div>
+			</div>
+
+			<div class="col-md-8">
+				<div class="user-div">
+					<label class="block">Date of registration: </label>
+					<label class="block">Name: </label>
+					<label class="block">Email: </label>
+
+					<form action="change_role">		
+						<label for="role"> Role: </label>
+						<select name="role" class="form-control">
+							<option value="${role}">role</option>
+						</select>
+						<button type="submit" id="button-change-role" class="btn btn-default btn-change-role">Change role</button>
+					</form>
+
+				</div><!--  user-div end -->
+			</div>			
+		</div>
+
+	</div>
+	<!--footer-->
+</body>
+</html>
+<!--end footer-->
