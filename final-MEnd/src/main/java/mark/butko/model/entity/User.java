@@ -1,5 +1,6 @@
 package mark.butko.model.entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,30 +8,41 @@ import java.util.Map;
 
 public class User {
 
+	public static final Long INITIAL_MONEY = 100_000_000L;
+
 	private Integer id;
 	private Role role;
 	private String name;
 	private String email;
 	private String password;
+	private LocalDate registrationDate;
 	private Long money;
 	private List<Proposal> proposals = new ArrayList<>();
 
 	public User() {
 	}
 
-	public User(Role role, String name, String email, String password, Long money, List<Proposal> proposals) {
-		this.role = role;
+	public User(String name, String email, String password) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.money = money;
-		this.proposals = proposals;
+		this.role = Role.CUSTOMER;
+		this.registrationDate = LocalDate.now();
+		this.money = INITIAL_MONEY;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", role=" + role + ", name=" + name + ", email=" + email + ", password=" + password
-				+ ", money=" + money + "]";
+		return "User [id=" + id + ", role=" + role + ", name=" + name + "date=" + registrationDate + ", email=" + email
+				+ ", password=" + password + ", money=" + money + "]";
+	}
+
+	public LocalDate getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(LocalDate registrationDate) {
+		this.registrationDate = registrationDate;
 	}
 
 	public Integer getId() {
@@ -126,6 +138,11 @@ public class User {
 
 		public Builder role(Role role) {
 			user.setRole(role);
+			return this;
+		}
+
+		public Builder date(LocalDate registrationDate) {
+			user.setRegistrationDate(registrationDate);
 			return this;
 		}
 
