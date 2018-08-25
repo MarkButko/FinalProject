@@ -4,7 +4,7 @@
 
 	<tlib-version>l.0</tlib-version>
 	<short-name>mend</short-name>
-	<uri>/custom.tld</uri>
+	<uri>/WEB-INF/custom.tld</uri>
 	
 	<tag>
 		<name>proposals</name>

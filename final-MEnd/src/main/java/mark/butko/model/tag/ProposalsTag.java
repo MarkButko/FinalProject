@@ -37,11 +37,12 @@ public class ProposalsTag extends BodyTagSupport {
 
 	private void setAttributes(Proposal proposal) {
 		pageContext.setAttribute("author", proposal.getAuthor());
+		pageContext.setAttribute("id", proposal.getId());
 		pageContext.setAttribute("master", proposal.getMaster());
 		pageContext.setAttribute("manager", proposal.getManager());
 		pageContext.setAttribute("date", proposal.getDate());
 		pageContext.setAttribute("message", proposal.getMessage());
-		pageContext.setAttribute("rejectionCause", proposal.getRejectionCause());
+		pageContext.setAttribute("rejection_cause", proposal.getRejectionCause());
 		pageContext.setAttribute("status", proposal.getStatus());
 		pageContext.setAttribute("comment", proposal.getComment());
 		pageContext.setAttribute("price", proposal.getPrice());
