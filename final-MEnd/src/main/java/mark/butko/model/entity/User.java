@@ -1,28 +1,52 @@
 package mark.butko.model.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class User {
 
+	private Integer id;
 	private Role role;
 	private String name;
 	private String email;
 	private String password;
+	private Long money;
+	private List<Proposal> proposals = new ArrayList<>();
 
 	public User() {
 	}
 
-	public User(Role role, String name, String email, String password) {
+	public User(Role role, String name, String email, String password, Long money, List<Proposal> proposals) {
 		this.role = role;
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.money = money;
+		this.proposals = proposals;
 	}
 
 	@Override
 	public String toString() {
-		return "User [role=" + role + ", name=" + name + ", email=" + email + ", password=" + password + "]";
+		return "User [id=" + id + ", role=" + role + ", name=" + name + ", email=" + email + ", password=" + password
+				+ ", money=" + money + "]";
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public List<Proposal> getProposals() {
+		return proposals;
+	}
+
+	public void setProposals(List<Proposal> proposals) {
+		this.proposals = proposals;
 	}
 
 	public Role getRole() {
@@ -31,6 +55,14 @@ public class User {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public Long getMoney() {
+		return money;
+	}
+
+	public void setMoney(Long money) {
+		this.money = money;
 	}
 
 	public String getName() {
@@ -57,7 +89,7 @@ public class User {
 		this.password = password;
 	}
 
-	public enum Role {
+	public static enum Role {
 		CUSTOMER(0), MASTER(1), MANAGER(2), ADMIN(3), GUEST(4);
 
 		private int dbValue;
@@ -104,6 +136,16 @@ public class User {
 
 		public Builder password(String password) {
 			user.setPassword(password);
+			return this;
+		}
+
+		public Builder money(Long money) {
+			user.setMoney(money);
+			return this;
+		}
+
+		public Builder id(Integer id) {
+			user.setId(id);
 			return this;
 		}
 

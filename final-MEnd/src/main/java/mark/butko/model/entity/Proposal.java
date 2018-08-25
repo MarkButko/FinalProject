@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class Proposal {
 
+	private Integer id;
 	private User author;
 	private User master;
 	private User manager;
@@ -32,9 +33,17 @@ public class Proposal {
 
 	@Override
 	public String toString() {
-		return "Proposal [author=" + author + ", master=" + master + ", manager=" + manager + ", date=" + date
-				+ ", message=" + message + ", rejectionCause=" + rejectionCause + ", status=" + status + ", comment="
-				+ comment + ", price=" + price + "]";
+		return "Proposal [id=" + id + ", author=" + author.getName() + ", master=" + master.getName() + ", manager="
+				+ manager.getName() + ", date=" + date + ", message=" + message + ", rejectionCause=" + rejectionCause
+				+ ", status=" + status + ", comment=" + comment + ", price=" + price + "]";
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public User getAuthor() {
@@ -109,7 +118,7 @@ public class Proposal {
 		this.price = price;
 	}
 
-	public enum Status {
+	public static enum Status {
 		NEW(0), ACCEPTED(1), REJECTED(2), CLOSED(3);
 
 		private int dbValue;
@@ -181,6 +190,11 @@ public class Proposal {
 
 		public Builder price(Long price) {
 			proposal.setPrice(price);
+			return this;
+		}
+
+		public Builder id(Integer id) {
+			proposal.setId(id);
 			return this;
 		}
 
