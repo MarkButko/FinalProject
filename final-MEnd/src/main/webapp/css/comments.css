@@ -16,3 +16,7 @@
 hr {
 	margin: 5px;
 }
+
+nav + div {
+	margin-top: 50px;
+}
