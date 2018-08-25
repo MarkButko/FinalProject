@@ -11,7 +11,7 @@
 <html lang="${language}">
 <head>
 <meta charset="utf-8">
-<meta hhtp-equiv="pragma" content="no-cache" />
+<meta http-equiv="pragma" content="no-cache" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet"	href="../css/bootstrap/bootstrap.min.css"	type="text/css">
-<link rel="stylesheet"	href="../css/main.css"	type="text/css">
+<link rel="stylesheet"	href="../../css/bootstrap/bootstrap.min.css"	type="text/css">
+<link rel="stylesheet"	href="../../css/main.css"	type="text/css">
