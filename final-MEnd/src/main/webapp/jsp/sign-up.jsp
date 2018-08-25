@@ -1,13 +1,17 @@
 <%@ include file="../includes/before_head.jsp"%>
-<title><fmt:message key="login.title" /></title>
+<title>sign-up.title</title>
 <%@ include file="../includes/after_head.jsp"%>
+
 <%@ include file="../includes/before_nav.jsp"%>
 <%@ include file="../includes/after_nav.jsp"%>
 
 <div class="container" id="login-div">
 	<div class="row">
 		<div class="col-md-offset-4 col-md-4">
-			<form id="login-form" action="login" class=" centered">
+			<form id="login-form" action="signup" class=" centered">
+				<div class="form-group">
+					<input type="text" name="name" placeholder="Username" required>
+				</div>
 				<div class="form-group">
 					<input type="email" name="email" placeholder="Email" required>
 				</div>
@@ -16,19 +20,9 @@
 				</div>
 				<!-- <input type="checkbox" name="remember.me" id="remember.me"> -->
 				<!-- <label for="remember.me">Remember me</label> -->
-				<input type="submit" class="btn btn-default" value="Log in">
-		</div>
-		</form>
-	</div>
-</div>
-
-<div id="redirect-container" class="container">
-	<div class="row">
-		<div class="col-md-offset-4 col-md-4">
-			<div id="redirect">
-				<label>Don't have an account?</label> <a id="sign-up-a" href="register.jsp">Sign up</a>
+				<input type="submit" class="btn btn-default" value="Sign up">
 			</div>
-		</div>
+		</form>
 	</div>
 </div>
 
