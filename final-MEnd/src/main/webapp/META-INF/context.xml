@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Context>
+	<Resource name="jdbc/mend" 
+		auth="Container"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/mend"
+		username="root"
+		password="1111" 
+		maxActive="7" 
+		maxidle="3"
+		maxWait="10000"
+		validationQuery="SELECT 1"
+		testOnBorrow="true"
+		removeAbandoned="true"
+		removeAbandonedTimeout="30" 
+		type="javax.sql.DataSource" />
+</Context>
