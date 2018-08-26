@@ -4,11 +4,11 @@
 
 	<tlib-version>l.0</tlib-version>
 	<short-name>mend</short-name>
-	<uri>/WEB-INF/custom.tld</uri>
+	<uri>/WEB-INF/tld/custom.tld</uri>
 	
 	<tag>
 		<name>proposals</name>
-		<tagclass>mark.butko.model.tag.ProposalsTag</tagclass>
+		<tagclass>mark.butko.tag.ProposalsTag</tagclass>
 		<body-content>JSP</body-content>
 		
 		<attribute>
