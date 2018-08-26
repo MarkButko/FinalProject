@@ -1,4 +1,4 @@
-package mark.butko.model.tag;
+package mark.butko.tag;
 
 import java.io.IOException;
 import java.util.ArrayList;
