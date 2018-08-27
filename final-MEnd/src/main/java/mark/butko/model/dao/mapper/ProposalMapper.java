@@ -9,7 +9,10 @@ public class ProposalMapper implements Mapper<Proposal> {
 
 	@Override
 	public Proposal extractFromResultSet(ResultSet rs) throws SQLException {
-		return new Proposal.Builder()
+		if (rs.getDate("date") == null) {
+			return null;
+		}
+		return new Proposal.Builder()// author. master?
 				.id(rs.getInt("id"))
 				.date(rs.getDate("date").toLocalDate())
 				.message(rs.getString("message"))

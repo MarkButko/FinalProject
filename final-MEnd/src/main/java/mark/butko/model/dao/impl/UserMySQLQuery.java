@@ -10,12 +10,11 @@ public final class UserMySQLQuery {
 			"name = ?, email = ?, password = ?, money = ?, registration_date ?, role = ? " +
 			"WHERE user.id = ?";
 
-	public static final String FIND_BY_ID = "SELECT * FROM user WHERE id = ?";
+	public static final String FIND_BY_ID = "SELECT * FROM user LEFT JOIN proposal ON user.id = proposal.author_id WHERE user.id = ?";
+
+	public static final String FIND_BY_EMAIL = "SELECT * FROM user LEFT JOIN proposal ON user.id = proposal.author_id WHERE user.email = ?";
 
 	public static final String FIND_ALL = "SELECT * FROM user";
 
 	public static final String DELETE = "DELETE FROM user WHERE id = ?";
-
-	private UserMySQLQuery() {
-	};
 }

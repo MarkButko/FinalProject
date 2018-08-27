@@ -7,9 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import mark.butko.model.dao.UserDao;
+import mark.butko.model.dao.mapper.ProposalMapper;
 import mark.butko.model.dao.mapper.UserMapper;
+import mark.butko.model.entity.Proposal;
 import mark.butko.model.entity.User;
 
 public class JDBCUserDao implements UserDao {
@@ -17,6 +20,33 @@ public class JDBCUserDao implements UserDao {
 
 	public JDBCUserDao(Connection connection) {
 		this.connection = connection;
+	}
+
+	@Override
+	public Optional<User> findByEmail(String email) {
+
+		User user = null;
+		Proposal proposal;
+
+		try (PreparedStatement statement = connection.prepareStatement(UserMySQLQuery.FIND_BY_EMAIL)) {
+			statement.setString(1, email);
+			ResultSet resultSet = statement.executeQuery();
+
+			UserMapper userMapper = new UserMapper();
+			ProposalMapper proposalMapper = new ProposalMapper();
+
+			if (resultSet.next()) {
+				user = userMapper.extractFromResultSet(resultSet);
+				do {
+					proposal = proposalMapper.extractFromResultSet(resultSet);
+					user.getProposals().add(proposal);
+				} while (resultSet.next());
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();// log
+		}
+		return Optional.ofNullable(user);
 	}
 
 	@Override
@@ -29,6 +59,7 @@ public class JDBCUserDao implements UserDao {
 			statement.setLong(4, user.getMoney());
 			statement.setDate(5, Date.valueOf(user.getRegistrationDate()));
 			statement.setInt(6, user.getRole().getDBValue());
+
 			rowAffected = statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();// log
@@ -38,17 +69,30 @@ public class JDBCUserDao implements UserDao {
 
 	@Override
 	public User findById(int id) {
+
+		User user = null;
+		Proposal proposal;
+
 		try (PreparedStatement statement = connection.prepareStatement(UserMySQLQuery.FIND_BY_ID)) {
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
-			UserMapper mapper = new UserMapper();
+
+			ProposalMapper proposalMapper = new ProposalMapper();
+			UserMapper userMapper = new UserMapper();
+
 			if (resultSet.next()) {
-				return mapper.extractFromResultSet(resultSet);
+				user = userMapper.extractFromResultSet(resultSet);
+				do {
+					proposal = proposalMapper.extractFromResultSet(resultSet);
+					user.getProposals().add(proposal);
+				} while (resultSet.next());
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();// log
 		}
-		return null;
+
+		return user;
 	}
 
 	@Override
@@ -76,6 +120,7 @@ public class JDBCUserDao implements UserDao {
 			statement.setLong(4, user.getMoney());
 			statement.setDate(5, Date.valueOf(user.getRegistrationDate()));
 			statement.setInt(6, user.getRole().getDBValue());
+
 			rowAffected = statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();// log
