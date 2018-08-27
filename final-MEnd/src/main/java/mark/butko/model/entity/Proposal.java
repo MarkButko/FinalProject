@@ -119,7 +119,7 @@ public class Proposal {
 	}
 
 	public static enum Status {
-		NEW(0), ACCEPTED(1), REJECTED(2), CLOSED(3);
+		NEW(0), ACCEPTED(1), REJECTED(2), COMPLETED(3);
 
 		private int dbValue;
 
@@ -139,7 +139,7 @@ public class Proposal {
 			return values.getOrDefault(dbValue, Status.NEW);
 		}
 
-		public int getDBValue() {
+		public int getDbValue() {
 			return dbValue;
 		}
 	}

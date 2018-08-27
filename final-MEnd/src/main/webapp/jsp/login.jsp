@@ -7,7 +7,7 @@
 <div class="container" id="login-div">
 	<div class="row">
 		<div class="col-md-offset-4 col-md-4">
-			<form id="login-form" action="login" class=" centered">
+			<form id="login-form" action="${pageContext.request.contextPath}/get/login" class="centered" method="POST">
 				<div class="form-group">
 					<input type="email" name="email" placeholder="Email" required>
 				</div>

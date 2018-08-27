@@ -8,10 +8,26 @@
 	padding: 10px 10px;
 }
 
+.pagination-div {
+	width: 300px;
+}
+
+input[value="previous"] {
+	float: none;
+}
+
+input[value="next"] {
+	float: right;
+}
+
 .date {
 	margin-right: 40%;
 }
 
 hr {
 	margin: 5px;
+}
+
+nav + div {
+	margin-top: 30px;
 }

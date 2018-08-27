@@ -1,11 +1,10 @@
-<%@ include file="../includes/before_head.jsp"%>
-	<link rel="stylesheet"	href="../../css/user.css"	type="text/css">
-	<link rel="stylesheet"	href="../../css/proposal.css"	type="text/css">
+<%@ include file="../../includes/before_head.jsp"%>
+	<link rel="stylesheet"	href="../css/user.css"	type="text/css">
+	<link rel="stylesheet"	href="../css/proposal.css"	type="text/css">
 	<title>My proposals</title>
-<%@ include file="../includes/after_head.jsp"%>
+<%@ include file="../../includes/after_head.jsp"%>
 
-
-<%@ include file="../includes/before_nav.jsp"%>
+<%@ include file="../../includes/before_nav.jsp"%>
 	<div class="menu">
 		<ul class="nav navbar-nav">
 			<li><a href="#" class="custom-underline ">Leave proposal</a></li>
@@ -14,63 +13,75 @@
 			<hr />
 		</ul>
 	</div>
-	<%@ include file="../includes/logout.jsp"%>
-<%@ include file="../includes/after_nav.jsp"%>
+	<%@ include file="../../includes/logout.jsp"%>
+<%@ include file="../../includes/after_nav.jsp"%>
 
 
 <div class="container">
 	<div class="row">
 
-		<cstm:proposals>
+		<c:forEach items="${proposals}" var="proposal">
 			<div class="col-md-offset-2 col-md-6 proposal-div">
 
-				<label class="date">${date}</label>
-				<label>${status.name}</label>
+				<label class="date">${proposal.date}</label>
+				<label>${proposal.status}</label>
 				<hr />
 
 				<c:if test="${not empty manager}">
-					<p>Manager: ${manager.name}</p>
+					<p>Manager: ${proposal.manager.name}</p>
 					<hr />
 				</c:if>
 
 				<c:if test="${not empty master}">
-					<p>Master: ${master.name}</p>
+					<p>Master: ${proposal.master.name}</p>
 					<hr />
 				</c:if>
 
 				<h4>Proposal text:</h4>
-				<p>${message}</p>
+				<p>${proposal.message}</p>
 				<hr />
 
-				<c:if test="${not empty rejection_cause}">
+				<c:if test="${not empty proposal.rejectionCause}">
 					<h4>Rejection cause:</h4>
-					<p>${rejection_cause}</p>
+					<p>${proposal.rejectionCause}</p>
 				</c:if>
 
-				<c:if test="${not empty price}">
-					<h4>Price: ${price}</h4>
+				<c:if test="${not empty proposal.price and proposal.price != 0}">
+					<h4>Price: ${proposal.price}</h4>
 				</c:if>
 
-				<c:if test="${not empty comment}">
+				<c:if test="${not empty proposal.comment}">
 					<h4>Your comment:</h4>
-					<p>${comment}</p>
+					<p>${proposal.comment}</p>
 				</c:if>
-				<c:if test="${empty comment}">
+				<c:if test="${empty proposal.comment and proposal.status == 'COMPLETED'}">
 					<div class="comment-div">
-						<form action="comment" method="POST">
+						<form action="${pageContext.request.contextPath}/get/comment" method="POST">
 							<div class="form-group">
 								<textarea name="comment" placeholder="Comment here" required></textarea>
 							</div>
+							<input type="hidden" name="id" value="${proposal.id}"/>
 							<input type="submit" class="btn btn-default button-cool" value="Comment">
 						</form>
 					</div>
 				</c:if>
 
 			</div>
-		</cstm:proposals>
+		</c:forEach>
+
+		<div class="row">
+			<div class="col-md-offset-5 col-md-2 pagination-div">
+				<form action="${pageContext.request.contextPath}/get/proposalsPage" method="post">
+					<c:if test="${currentPage > 1}">
+				    	<input type="submit" class="btn btn-default button-cool" name="page" value="previous">
+				    </c:if>
+				    	<input type="submit" class="btn btn-default button-cool" name="page" value="next">
+				</form>
+			</div>
+		</div>
 
 	</div>
 </div>
 
 
-<%@ include file="../includes/footer.jsp"%>
+<%@ include file="../../includes/footer.jsp"%>
