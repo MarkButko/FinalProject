@@ -71,11 +71,11 @@
 
 		<div class="row">
 			<div class="col-md-offset-5 col-md-2 pagination-div">
-				<form action="${pageContext.request.contextPath}/get/proposalsPage" method="post">
+				<form action="${pageContext.request.contextPath}/get/proposalsPagination" method="post">
 					<c:if test="${currentPage > 1}">
 				    	<input type="submit" class="btn btn-default button-cool" name="page" value="previous">
 				    </c:if>
-				    	<input type="submit" class="btn btn-default button-cool" name="page" value="next">
+				    <input type="submit" class="btn btn-default button-cool" name="page" value="next">
 				</form>
 			</div>
 		</div>
