@@ -8,8 +8,7 @@
 <%@ include file="../../includes/before_nav.jsp"%>
 	<div class="menu">
 		<ul class="nav navbar-nav">
-			<li><a href="#" class="custom-underline active">Proposals</a></li>
-			<li><a href="#" class="custom-underline">Comments</a></li>
+			<li><a href="${pageContext.request.contextPath}/get/manager/proposals" class="custom-underline active">Proposals</a></li>
 			<hr />
 		</ul>
 	</div>
