@@ -17,4 +17,7 @@ public final class UserMySQLQuery {
 	public static final String FIND_ALL = "SELECT * FROM user";
 
 	public static final String DELETE = "DELETE FROM user WHERE id = ?";
+
+	public static final String COUNT_PROPOSALS = "SELECT COUNT(*) as count FROM proposal JOIN user" +
+			" ON user.id = proposal.author_id WHERE author_id = ?";
 }

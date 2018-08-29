@@ -16,10 +16,25 @@ import mark.butko.model.entity.Proposal;
 import mark.butko.model.entity.User;
 
 public class JDBCUserDao implements UserDao {
+
 	private Connection connection;
 
 	public JDBCUserDao(Connection connection) {
 		this.connection = connection;
+	}
+
+	@Override
+	public Integer countProposals(Integer userId) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(UserMySQLQuery.COUNT_PROPOSALS)) {
+			preparedStatement.setInt(1, userId);
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	@Override

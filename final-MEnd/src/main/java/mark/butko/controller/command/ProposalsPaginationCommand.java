@@ -4,14 +4,21 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import mark.butko.controller.Path;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import mark.butko.controller.JSPPath;
 import mark.butko.model.entity.Proposal;
 import mark.butko.model.entity.User;
 import mark.butko.model.service.ProposalService;
+import mark.butko.model.service.UserService;
 
 public class ProposalsPaginationCommand implements Command {
 
+	private static final Logger LOGGER = LogManager.getLogger(ProposalsPaginationCommand.class.getName());
+
 	private ProposalService proposalService;
+	private UserService userService = new UserService();
 	private final int ROWS_ON_PAGE = 5;
 	private int currentPage = 1;
 
@@ -38,14 +45,14 @@ public class ProposalsPaginationCommand implements Command {
 
 		Integer offset = (pageNumber - 1) * ROWS_ON_PAGE;
 
-		List<Proposal> proposals = proposalService.new ProposalsListBuilder()
+		List<Proposal> proposals = proposalService.new ProposalsPageListBuilder()
 				.setUserId(userId)
 				.setLimit(ROWS_ON_PAGE)
 				.setOffset(offset)
 				.getList();
 
 		if (proposals == null || proposals.isEmpty()) {
-			proposals = proposalService.new ProposalsListBuilder()
+			proposals = proposalService.new ProposalsPageListBuilder()
 					.setUserId(userId)
 					.setLimit(ROWS_ON_PAGE)
 					.setOffset(0)
@@ -53,11 +60,15 @@ public class ProposalsPaginationCommand implements Command {
 			currentPage = 1;
 		}
 
+		Integer lastPage = userService.countProposals(userId) / ROWS_ON_PAGE
+				+ ((userService.countProposals(userId) % ROWS_ON_PAGE) == 0 ? 0 : 1);
+
 		request.setAttribute("proposals", proposals);
 		request.setAttribute("currentPage", currentPage);
+		request.setAttribute("lastPage", lastPage);
 
-		System.out.println("Proposals Pagination command: currentPage = " + currentPage);
-		return Path.PROPOSALS;
+		LOGGER.debug("currentPage = {}, lastPage = {}", currentPage, lastPage);
+		return JSPPath.PROPOSALS;
 	}
 
 }

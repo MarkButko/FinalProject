@@ -1,15 +1,15 @@
 <%@ include file="../../includes/before_head.jsp"%>
-	<link rel="stylesheet"	href="../css/user.css"	type="text/css">
-	<link rel="stylesheet"	href="../css/proposal.css"	type="text/css">
+	<link rel="stylesheet"	href="${pageContext.request.contextPath}/css/user.css"	type="text/css">
+	<link rel="stylesheet"	href="${pageContext.request.contextPath}/css/proposal.css"	type="text/css">
 	<title>My proposals</title>
 <%@ include file="../../includes/after_head.jsp"%>
 
 <%@ include file="../../includes/before_nav.jsp"%>
 	<div class="menu">
 		<ul class="nav navbar-nav">
-			<li><a href="#" class="custom-underline ">Leave proposal</a></li>
+			<li><a href="${pageContext.request.contextPath}/get/customer/leaveProposal" class="custom-underline ">Leave proposal</a></li>
 			<li><a href="#" class="custom-underline active">My proposals</a></li>
-			<li><a href="#" class="custom-underline">Comments</a></li>
+			<li><a href="${pageContext.request.contextPath}/get/customer/comments" class="custom-underline">Comments</a></li>
 			<hr />
 		</ul>
 	</div>
@@ -71,11 +71,13 @@
 
 		<div class="row">
 			<div class="col-md-offset-5 col-md-2 pagination-div">
-				<form action="${pageContext.request.contextPath}/get/proposalsPagination" method="post">
+				<form action="${pageContext.request.contextPath}/get/customer/proposalsPagination" method="post">
 					<c:if test="${currentPage > 1}">
 				    	<input type="submit" class="btn btn-default button-cool" name="page" value="previous">
 				    </c:if>
-				    <input type="submit" class="btn btn-default button-cool" name="page" value="next">
+				    <c:if test="${currentPage < lastPage}">
+				    	<input type="submit" class="btn btn-default button-cool" name="page" value="next">
+					</c:if>
 				</form>
 			</div>
 		</div>

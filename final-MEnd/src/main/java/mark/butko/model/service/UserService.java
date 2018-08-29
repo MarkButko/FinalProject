@@ -24,4 +24,10 @@ public class UserService {
 		}
 		throw new LoginException("User with email " + email + " is not found.");
 	}
+
+	public Integer countProposals(Integer userId) {
+		try (UserDao userDao = daoFactory.createUserDao()) {
+			return userDao.countProposals(userId);
+		}
+	}
 }

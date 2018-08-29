@@ -4,11 +4,24 @@ import java.util.List;
 
 import mark.butko.model.dao.DaoFactory;
 import mark.butko.model.dao.ProposalDao;
+import mark.butko.model.dao.UserDao;
 import mark.butko.model.entity.Proposal;
+import mark.butko.model.entity.User;
 
 public class ProposalService {
 
 	DaoFactory daoFactory = DaoFactory.getInstance();
+
+	public void createProposal(String message, Integer userId) {
+		try (ProposalDao proposalDao = daoFactory.createProposalDao();
+				UserDao userDao = daoFactory.createUserDao()) {
+
+			User user = userDao.findById(userId);
+			Proposal proposal = new Proposal(user, message);
+
+			proposalDao.create(proposal);
+		}
+	}
 
 	public void comment(String comment, Integer id) {
 		try (ProposalDao proposalDao = daoFactory.createProposalDao()) {
@@ -24,7 +37,13 @@ public class ProposalService {
 		}
 	}
 
-	public class ProposalsListBuilder {
+	public Integer countAll() {
+		try (ProposalDao proposalDao = daoFactory.createProposalDao()) {
+			return proposalDao.countAll();
+		}
+	}
+
+	public class ProposalsPageListBuilder {
 
 		private String orderProperty;
 		private Integer limit;
@@ -35,7 +54,7 @@ public class ProposalService {
 			return orderProperty;
 		}
 
-		public ProposalsListBuilder setOrderProperty(String orderProperty) {
+		public ProposalsPageListBuilder setOrderProperty(String orderProperty) {
 			this.orderProperty = orderProperty;
 			return this;
 		}
@@ -44,7 +63,7 @@ public class ProposalService {
 			return limit;
 		}
 
-		public ProposalsListBuilder setLimit(Integer limit) {
+		public ProposalsPageListBuilder setLimit(Integer limit) {
 			this.limit = limit;
 			return this;
 		}
@@ -53,7 +72,7 @@ public class ProposalService {
 			return offset;
 		}
 
-		public ProposalsListBuilder setOffset(Integer offset) {
+		public ProposalsPageListBuilder setOffset(Integer offset) {
 			this.offset = offset;
 			return this;
 		}
@@ -62,14 +81,14 @@ public class ProposalService {
 			return userId;
 		}
 
-		public ProposalsListBuilder setUserId(Integer userId) {
+		public ProposalsPageListBuilder setUserId(Integer userId) {
 			this.userId = userId;
 			return this;
 		}
 
 		public List<Proposal> getList() {
 			try (ProposalDao proposalDao = daoFactory.createProposalDao()) {
-				return proposalDao.findPage(userId, orderProperty, limit, offset);
+				return proposalDao.findProposalsPage(userId, orderProperty, limit, offset);
 			}
 		};
 	}

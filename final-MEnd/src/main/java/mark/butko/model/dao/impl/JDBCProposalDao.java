@@ -9,11 +9,19 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import mark.butko.dto.Comment;
 import mark.butko.model.dao.ProposalDao;
+import mark.butko.model.dao.mapper.CommentMapper;
 import mark.butko.model.dao.mapper.ProposalMapper;
 import mark.butko.model.entity.Proposal;
 
 public class JDBCProposalDao implements ProposalDao {
+
+	private static final Logger LOGGER = LogManager.getLogger(JDBCProposalDao.class.getName());
+
 	private Connection connection;
 
 	public JDBCProposalDao(Connection connection) {
@@ -126,16 +134,70 @@ public class JDBCProposalDao implements ProposalDao {
 	}
 
 	@Override
-	public List<Proposal> findPage(Integer userId, String orderProperty, Integer limit, Integer offset) {
+	public List<Comment> findCommentsPage(String orderProperty, Integer limit, Integer offset) {
+		List<Comment> list = new ArrayList<>();
+
+		if (orderProperty == null || orderProperty.isEmpty()) {
+			orderProperty = ProposalColumn.DATE;
+		}
+
+		LOGGER.debug("findCommentsPage :: orderProp = " + orderProperty
+				+ " limit = " + limit + " offset = " + offset);
+
+		try (PreparedStatement statement = connection.prepareStatement(ProposalMySQLQuery.FIND_COMMENTS_PAGE)) {
+			statement.setString(1, orderProperty);
+			statement.setInt(2, limit);
+			statement.setInt(3, offset);
+			ResultSet resultSet = statement.executeQuery();
+
+			CommentMapper mapper = new CommentMapper();
+			while (resultSet.next()) {
+				list.add(mapper.extractFromResultSet(resultSet));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public Integer countAll() {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(ProposalMySQLQuery.COUNT_ALL)) {
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public Integer countComments() {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(ProposalMySQLQuery.COUNT_COMMENTS)) {
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public List<Proposal> findProposalsPage(Integer userId, String orderProperty, Integer limit, Integer offset) {
 		List<Proposal> list = new ArrayList<>();
 
 		if (orderProperty == null || orderProperty.isEmpty()) {
 			orderProperty = ProposalColumn.DATE;
 		}
-		System.out.println("JDBCProposalDao: findPage: userId = " + userId + " orderProp = " + orderProperty
+
+		LOGGER.debug("findProposalsPage :: userId = " + userId + " orderProp = " + orderProperty
 				+ " limit = " + limit + " offset = " + offset);
 
-		try (PreparedStatement statement = connection.prepareStatement(ProposalMySQLQuery.FIND_PAGE)) {
+		try (PreparedStatement statement = connection.prepareStatement(ProposalMySQLQuery.FIND_PROPOSALS_PAGE)) {
 			statement.setInt(1, userId);
 			statement.setString(2, orderProperty);
 			statement.setInt(3, limit);

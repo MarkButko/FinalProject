@@ -14,12 +14,21 @@ public final class ProposalMySQLQuery {
 
 	public static final String FIND_ALL = "SELECT * FROM proposal";
 
+	public static final String COUNT_ALL = "SELECT COUNT(*) as count FROM proposal";
+
+	public static final String COUNT_COMMENTS = "SELECT COUNT(DISTINCT comment) as count FROM proposal";
+
 	public static final String DELETE = "DELETE FROM proposal WHERE id = ?";
 
 	public static final String FIND_BY_USER_ID = "SELECT * FROM proposal JOIN user" +
 			" ON user.id = proposal.author_id WHERE author_id = ?";
 
-	public static final String FIND_PAGE = "SELECT * FROM proposal JOIN user" +
+	public static final String FIND_PROPOSALS_PAGE = "SELECT * FROM proposal JOIN user" +
 			" ON user.id = proposal.author_id WHERE author_id = ?" +
+			" ORDER BY ? LIMIT ? OFFSET ?";
+
+	public static final String FIND_COMMENTS_PAGE = "SELECT comment, name FROM proposal JOIN user" +
+			" ON user.id = proposal.author_id" +
+			" WHERE comment IS NOT NULL" +
 			" ORDER BY ? LIMIT ? OFFSET ?";
 }
