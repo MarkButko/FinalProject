@@ -4,7 +4,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import mark.butko.controller.Path;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import mark.butko.controller.JSPPath;
+import mark.butko.controller.ServletPath;
 import mark.butko.model.entity.Proposal;
 import mark.butko.model.entity.User;
 import mark.butko.model.service.LoginException;
@@ -12,6 +16,8 @@ import mark.butko.model.service.ProposalService;
 import mark.butko.model.service.UserService;
 
 public class LoginCommand implements Command {
+
+	private static final Logger LOGGER = LogManager.getLogger(LoginCommand.class.getName());
 
 	private UserService userService;
 	private ProposalService proposalService;
@@ -34,13 +40,13 @@ public class LoginCommand implements Command {
 			List<Proposal> proposals = proposalService.getProposalsByUserId(user.getId());
 			request.setAttribute("proposals", proposals);
 
-			System.out.println("Login command proposals:");
+			LOGGER.info("Successed login: {}", user.getEmail());
 
-			path = Path.SERVLET_PAGINATION;
+			path = ServletPath.PAGINATION;
 		} catch (LoginException e) {
 			request.setAttribute("error_message", "Wrong login or password");
-			path = Path.LOGIN;
-			// log
+			path = JSPPath.LOGIN;
+			LOGGER.info("Fail login: {} - {}", email, password);
 		}
 		return path;
 	}
