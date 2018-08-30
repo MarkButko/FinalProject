@@ -26,7 +26,7 @@
 	<div class="row">
 		<div class="col-md-offset-4 col-md-4">
 			<div id="redirect">
-				<label>Don't have an account?</label> <a id="sign-up-a" href="register.jsp">Sign up</a>
+				<label>Don't have an account?</label> <a id="sign-up-a" href="${pageContext.request.contextPath}/get/sign-up">Sign up</a>
 			</div>
 		</div>
 	</div>

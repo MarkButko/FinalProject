@@ -34,6 +34,10 @@ public class LoginCommand implements Command {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
+		if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
+			return JSPPath.LOGIN;
+		}
+
 		try {
 			User user = userService.login(email, password);
 			request.getSession().setAttribute("user", user);
@@ -42,7 +46,7 @@ public class LoginCommand implements Command {
 
 			LOGGER.info("Successed login: {}", user.getEmail());
 
-			path = ServletPath.PAGINATION;
+			path = ServletPath.WELCOME_PAGE;
 		} catch (LoginException e) {
 			request.setAttribute("error_message", "Wrong login or password");
 			path = JSPPath.LOGIN;
