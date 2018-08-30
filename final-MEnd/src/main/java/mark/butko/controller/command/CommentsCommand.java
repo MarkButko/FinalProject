@@ -46,8 +46,11 @@ public class CommentsCommand implements Command {
 			currentPage = 1;
 		}
 
-		Integer lastPage = commentService.countAll() / ROWS_ON_PAGE
-				+ ((commentService.countAll() % ROWS_ON_PAGE) == 0 ? 0 : 1);
+		Integer commentsAmount = commentService.countAll();
+		Integer lastPage = commentsAmount / ROWS_ON_PAGE
+				+ ((commentsAmount % ROWS_ON_PAGE) == 0 ? 0 : 1);
+		LOGGER.debug("commentsAmount = {}, commentsAmount % onPage = {}", commentsAmount,
+				(commentsAmount % ROWS_ON_PAGE));
 
 		request.setAttribute("comments", comments);
 		request.setAttribute("currentPage", currentPage);
