@@ -12,6 +12,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,6 +25,7 @@ import mark.butko.controller.ServletPath;
 import mark.butko.model.entity.User;
 import mark.butko.model.entity.User.Role;
 
+@WebFilter("/*")
 public class AccessFilter implements Filter {
 
 	private static final Logger LOGGER = LogManager.getLogger(AccessFilter.class.getName());
@@ -36,12 +38,12 @@ public class AccessFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
-		LOGGER.info("doFilter");
+		LOGGER.trace("path : {}", ((HttpServletRequest) req).getRequestURI());
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		String requestedPath = request.getRequestURI().substring(ServletPath.SERVLET_CONTEXT.length());
 
-		if (requestedPath.matches(".*(css|jpg|png|gif|js|woff|woff2|ttf)$")) {
+		if (requestedPath.matches(".*(css|jpg|png|gif|js|woff|woff2|ttf|map)$")) {
 			chain.doFilter(request, response);
 			return;
 		}
@@ -75,12 +77,12 @@ public class AccessFilter implements Filter {
 		HashMap<User.Role, String> roleToPathMap = new HashMap<>();
 
 		Set<String> allowedToAll = new HashSet<>(
-				Arrays.asList(ServletPath.COMMENTS,
+				Arrays.asList(
+						ServletPath.WELCOME_PAGE,
 						ServletPath.SIGN_UP,
 						ServletPath.LOGIN,
 						ServletPath.EMPTY,
 						ServletPath.LOGOUT,
-						JSPPath.COMMENTS,
 						JSPPath.SIGN_UP,
 						JSPPath.LOGIN));
 
