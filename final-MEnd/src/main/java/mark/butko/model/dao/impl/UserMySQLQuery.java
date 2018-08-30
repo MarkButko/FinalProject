@@ -7,12 +7,14 @@ public final class UserMySQLQuery {
 			"VALUES (?, ?, ?, ?, ?, ?)";
 
 	public static final String UPDATE = "UPDATE user SET " +
-			"name = ?, email = ?, password = ?, money = ?, registration_date ?, role = ? " +
+			"name = ?, email = ?, password = ?, money = ?, role = ? " +
 			"WHERE user.id = ?";
 
-	public static final String FIND_BY_ID = "SELECT * FROM user LEFT JOIN proposal ON user.id = proposal.author_id WHERE user.id = ?";
+	public static final String FIND_BY_ID = "SELECT * FROM user LEFT JOIN proposal" +
+			" ON user.id = proposal.author_id WHERE user.id = ?";
 
-	public static final String FIND_BY_EMAIL = "SELECT * FROM user LEFT JOIN proposal ON user.id = proposal.author_id WHERE user.email = ?";
+	public static final String FIND_BY_EMAIL = "SELECT * FROM user LEFT JOIN proposal" +
+			" ON user.id = proposal.author_id WHERE user.email = ?";
 
 	public static final String FIND_ALL = "SELECT * FROM user";
 
@@ -20,4 +22,10 @@ public final class UserMySQLQuery {
 
 	public static final String COUNT_PROPOSALS = "SELECT COUNT(*) as count FROM proposal JOIN user" +
 			" ON user.id = proposal.author_id WHERE author_id = ?";
+
+	public static final String WHERE = " WHERE ";
+
+	public static final String ORDER_BY = " ORDER BY ";
+
+	public static final String AND = " AND ";
 }

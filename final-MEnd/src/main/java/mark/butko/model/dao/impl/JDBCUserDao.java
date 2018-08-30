@@ -1,5 +1,9 @@
 package mark.butko.model.dao.impl;
 
+import static mark.butko.model.dao.impl.UserMySQLQuery.FIND_ALL;
+import static mark.butko.model.dao.impl.UserMySQLQuery.ORDER_BY;
+import static mark.butko.model.dao.impl.UserMySQLQuery.WHERE;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -9,6 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import mark.butko.model.criteria.CriteriaUtil;
+import mark.butko.model.criteria.FilterCriteria;
+import mark.butko.model.criteria.SortCriteria;
 import mark.butko.model.dao.UserDao;
 import mark.butko.model.dao.mapper.ProposalMapper;
 import mark.butko.model.dao.mapper.UserMapper;
@@ -17,6 +27,7 @@ import mark.butko.model.entity.User;
 
 public class JDBCUserDao implements UserDao {
 
+	private static final Logger LOGGER = LogManager.getLogger(JDBCUserDao.class.getName());
 	private Connection connection;
 
 	public JDBCUserDao(Connection connection) {
@@ -133,14 +144,36 @@ public class JDBCUserDao implements UserDao {
 			statement.setString(2, user.getEmail());
 			statement.setString(3, user.getPassword());
 			statement.setLong(4, user.getMoney());
-			statement.setDate(5, Date.valueOf(user.getRegistrationDate()));
-			statement.setInt(6, user.getRole().getDBValue());
+			statement.setInt(5, user.getRole().getDBValue());
+			statement.setInt(6, user.getId());
 
 			rowAffected = statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();// log
 		}
 		return rowAffected;
+	}
+
+	@Override
+	public List<User> findByFiltersSortedList(List<? extends FilterCriteria> filters, SortCriteria order) {
+		List<User> list = new ArrayList<>();
+
+		String query = FIND_ALL + (filters.isEmpty() ? "" : WHERE)
+				+ CriteriaUtil.createSQLString(filters)
+				+ ORDER_BY + order.getSQLString();
+
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			CriteriaUtil.setParameters(filters, statement, 1);
+			ResultSet resultSet = statement.executeQuery();
+
+			UserMapper mapper = new UserMapper();
+			while (resultSet.next()) {
+				list.add(mapper.extractFromResultSet(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.warn("SQL exception on query : {}", query);
+		}
+		return list;
 	}
 
 	@Override

@@ -10,4 +10,7 @@ public final class JSPPath {
 	public static final String COMMENTS = "/jsp/customer/comments.jsp";
 	public static final String LEAVE_PROPOSAL = "/jsp/customer/leave_proposal.jsp";
 	public static final String EMPTY = "/";
+	public static final String ADMIN_PAGE = "/jsp/admin/admin.jsp";
+	public static final String MASTER_PAGE = "/jsp/master/master.jsp";
+	public static final String MANAGER_PAGE = "/jsp/manager/manager.jsp";
 }

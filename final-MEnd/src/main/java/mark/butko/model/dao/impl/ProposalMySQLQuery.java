@@ -16,7 +16,7 @@ public final class ProposalMySQLQuery {
 
 	public static final String COUNT_ALL = "SELECT COUNT(*) as count FROM proposal";
 
-	public static final String COUNT_COMMENTS = "SELECT COUNT(DISTINCT comment) as count FROM proposal";
+	public static final String COUNT_COMMENTS = "SELECT COUNT(ALL comment) as count FROM proposal";
 
 	public static final String DELETE = "DELETE FROM proposal WHERE id = ?";
 
