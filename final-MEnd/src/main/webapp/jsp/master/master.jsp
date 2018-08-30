@@ -1,6 +1,6 @@
 <%@ include file="../../includes/before_head.jsp"%>
-	<link rel="stylesheet"	href="../../css/proposal.css"	type="text/css">
-	<link rel="stylesheet"	href="../../css/master.css"	type="text/css">
+	<link rel="stylesheet"	href="${pageContext.request.contextPath}/css/proposal.css"	type="text/css">
+	<link rel="stylesheet"	href="${pageContext.request.contextPath}/css/master.css"	type="text/css">
 	<title>Users' proposals</title>
 <%@ include file="../../includes/after_head.jsp"%>
 

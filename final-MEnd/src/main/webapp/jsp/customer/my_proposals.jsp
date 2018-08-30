@@ -56,7 +56,7 @@
 				</c:if>
 				<c:if test="${empty proposal.comment and proposal.status == 'COMPLETED'}">
 					<div class="comment-div">
-						<form action="${pageContext.request.contextPath}/get/comment" method="POST">
+						<form action="${pageContext.request.contextPath}/get/customer/comment" method="POST">
 							<div class="form-group">
 								<textarea name="comment" placeholder="Comment here" required></textarea>
 							</div>

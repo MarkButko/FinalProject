@@ -1,4 +1,5 @@
-.filter-div {
+.filter-div,
+.sort-div {
 	background-color: hsla(71, 14%, 85%, .9);
 	width: 400px;
 	margin-top: 0px;
@@ -8,6 +9,11 @@
 	padding: 10px 10px;
 }
 
+.sort-div {
+	margin-top: 220px;
+}
+
+.sort-div button,
 .filter-div button,
 .user-div button{	
 	background-color: #B7B7D6FF !important;
@@ -19,6 +25,7 @@
 	margin-top: 10px;
 }
 
+.sort-div button:hover,
 .filter-div button:hover,
 .user-div button:hover {
 	background-color: #8787BAFF !important;

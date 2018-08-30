@@ -1,6 +1,6 @@
 <%@ include file="../../includes/before_head.jsp"%>
-	<link rel="stylesheet"	href="../../css/proposal.css"	type="text/css">
-	<link rel="stylesheet"	href="../../css/manager.css"	type="text/css">
+	<link rel="stylesheet"	href="${pageContext.request.contextPath}/css/proposal.css"	type="text/css">
+	<link rel="stylesheet"	href="${pageContext.request.contextPath}/css/manager.css"	type="text/css">
 	<title>Users' proposals</title>
 <%@ include file="../../includes/after_head.jsp"%>
 
@@ -22,7 +22,7 @@
 			<div class="col-md-4" id="filter-container">
 				<br>
 				<div class="container filter-div  fixed">
-					<form name="filter" action="filter">
+					<form name="filter" action="/get/manager/filter">
 
 						<label for="status-filter"> Status: </label>
 						<select name="status_filter" class="form-control">
@@ -82,7 +82,7 @@
 							<div id="modal-wrapper-accept" class="modal modal-wrapper-accept">
 								<div class="modal-content-accept">
 									<button type="button" class="close">&times;</button>
-									<form action="accept" method="POST">
+									<form action="/get/manager/accept" method="POST">
 										<input type="text" name="price" min="0" placeholder="Price" />
 										<button class="btn btn-default btn-modal">Submit</button>
 									</form>
@@ -92,7 +92,7 @@
 							<div id="modal-wrapper-reject" class="modal modal-wrapper-reject">
 								<div class="modal-content-reject">
 									<button class="close">&times;</button>
-									<form action="reject" method="POST">
+									<form action="/get/manager/reject" method="POST">
 										<textarea name="rejection_cause" placeholder="Rejection cause" ></textarea>
 										<button class="btn btn-default btn-modal">Submit</button>
 									</form>
@@ -106,6 +106,6 @@
 	</div> <!-- row div end-->
 </div>
 
-<script type="text/javascript" src="../../script/modal.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/modal.js"></script>
 
 <%@ include file="../../includes/footer.jsp"%>

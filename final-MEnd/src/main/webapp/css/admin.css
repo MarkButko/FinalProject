@@ -8,8 +8,16 @@
 	padding: 10px 10px;
 }
 
+#button-change-role {
+	margin-top: 0px;
+}
+
 .date {
 	margin-right: 40%;
+}
+
+nav + div {
+	margin-top: 30px;
 }
 
 hr {
