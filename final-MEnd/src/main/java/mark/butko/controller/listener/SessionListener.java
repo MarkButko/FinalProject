@@ -15,6 +15,7 @@ public class SessionListener implements HttpSessionListener {
 	public void sessionCreated(HttpSessionEvent event) {
 		LOGGER.debug("Session Created");
 		HttpSession session = event.getSession();
+		session.setAttribute("language", "EN");
 	}
 
 	@Override
