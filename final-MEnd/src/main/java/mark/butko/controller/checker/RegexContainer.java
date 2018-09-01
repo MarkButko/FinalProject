@@ -1,4 +1,4 @@
-package mark.butko.controller.util;
+package mark.butko.controller.checker;
 
 /**
  * Enumeration that holds regex to validate user input. Constants names

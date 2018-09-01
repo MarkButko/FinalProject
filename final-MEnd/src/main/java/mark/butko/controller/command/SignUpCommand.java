@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import mark.butko.controller.JSPPath;
 import mark.butko.controller.ServletPath;
-import mark.butko.controller.util.UserInputChecker;
+import mark.butko.controller.checker.UserInputChecker;
 import mark.butko.model.entity.User;
 import mark.butko.model.service.UserAlreadyExistsException;
 import mark.butko.model.service.UserService;
