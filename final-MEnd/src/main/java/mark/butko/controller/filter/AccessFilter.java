@@ -58,9 +58,10 @@ public class AccessFilter implements Filter {
 
 		LOGGER.debug("requestedPath = {}, user.role = {}", requestedPath, user.getRole().name());
 		boolean hasRights = checkRights(user.getRole(), requestedPath);
-		if (hasRights) {
+		if (hasRights && !requestedPath.endsWith(".jsp")) {
 			chain.doFilter(request, response);
 		} else {
+			LOGGER.info("access denied for user : {} {} on url : {}", user.getEmail(), user.getRole(), requestedPath);
 			request.getServletContext()
 					.getRequestDispatcher(JSPPath.PAGE_NOT_FOUND)
 					.forward(request, response);
