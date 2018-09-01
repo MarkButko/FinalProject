@@ -6,10 +6,6 @@ import java.util.Map;
 
 public class Proposal {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private User author;
 	private User master;
