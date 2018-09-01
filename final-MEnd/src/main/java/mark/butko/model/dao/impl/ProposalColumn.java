@@ -2,7 +2,7 @@ package mark.butko.model.dao.impl;
 
 public final class ProposalColumn {
 
-	public static final String ID = "id";
+	public static final String ID = "proposal_id";
 	public static final String MESSAGE = "message";
 	public static final String DATE = "date";
 	public static final String STATUS = "status";

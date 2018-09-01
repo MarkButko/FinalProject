@@ -74,8 +74,6 @@ public class UserService {
 			} else {
 				throw new UserDoesNotExist();
 			}
-		} catch (Exception e) {
-			throw e;
 		}
 	}
 

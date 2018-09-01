@@ -3,6 +3,7 @@ package mark.butko.model.dao.impl;
 import static mark.butko.model.dao.impl.UserMySQLQuery.FIND_ALL;
 import static mark.butko.model.dao.impl.UserMySQLQuery.ORDER_BY;
 import static mark.butko.model.dao.impl.UserMySQLQuery.WHERE;
+import static mark.butko.model.dao.impl.UserMySQLQuery.WITHDRAW;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -49,6 +50,19 @@ public class JDBCUserDao implements UserDao {
 	}
 
 	@Override
+	public Integer withdraw(Long price, User customer) {
+		Integer rowsAffected = 0;
+		try (PreparedStatement preparedStatement = connection.prepareStatement(WITHDRAW)) {
+			preparedStatement.setLong(1, price);
+			preparedStatement.setInt(2, customer.getId());
+			rowsAffected = preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			LOGGER.warn("Withdraw failed for customer {} : on sum  {}", customer.getEmail(), price);
+		}
+		return rowsAffected;
+	}
+
+	@Override
 	public Optional<User> findByEmail(String email) {
 
 		User user = null;
@@ -71,6 +85,63 @@ public class JDBCUserDao implements UserDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();// log
+		}
+		return Optional.ofNullable(user);
+	}
+
+	@Override
+	public User findCustomerByProposalId(Integer proposalId) {
+		User user = null;
+
+		try (PreparedStatement statement = connection.prepareStatement(UserMySQLQuery.FIND_CUSTOMER_BY_PROPOSAL_ID)) {
+			statement.setInt(1, proposalId);
+			ResultSet resultSet = statement.executeQuery();
+
+			UserMapper userMapper = new UserMapper();
+			if (resultSet.next()) {
+				user = userMapper.extractFromResultSet(resultSet);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	@Override
+	public Optional<User> findManagerByProposalId(Integer proposalId) {
+		User manager = null;
+
+		try (PreparedStatement statement = connection.prepareStatement(UserMySQLQuery.FIND_MANAGER_BY_PROPOSAL_ID)) {
+			statement.setInt(1, proposalId);
+			ResultSet resultSet = statement.executeQuery();
+
+			UserMapper userMapper = new UserMapper();
+			if (resultSet.next()) {
+				manager = userMapper.extractFromResultSet(resultSet);
+			}
+			LOGGER.debug("findManagerByProposalId : manager {}", manager);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return Optional.ofNullable(manager);
+	}
+
+	@Override
+	public Optional<User> findMasterByProposalId(Integer proposalId) {
+		User user = null;
+
+		try (PreparedStatement statement = connection.prepareStatement(UserMySQLQuery.FIND_MASTER_BY_PROPOSAL_ID)) {
+			statement.setInt(1, proposalId);
+			ResultSet resultSet = statement.executeQuery();
+
+			UserMapper userMapper = new UserMapper();
+			if (resultSet.next()) {
+				user = userMapper.extractFromResultSet(resultSet);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return Optional.ofNullable(user);
 	}

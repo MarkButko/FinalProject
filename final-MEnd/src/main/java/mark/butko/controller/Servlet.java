@@ -20,10 +20,12 @@ import mark.butko.controller.command.CommentsCommand;
 import mark.butko.controller.command.LeaveProposalCommand;
 import mark.butko.controller.command.LoginCommand;
 import mark.butko.controller.command.LogoutCommand;
+import mark.butko.controller.command.MasterProposalsListCommand;
+import mark.butko.controller.command.PerformProposalCommand;
 import mark.butko.controller.command.ProposalsPaginationCommand;
 import mark.butko.controller.command.SignUpCommand;
 import mark.butko.controller.command.UserListCommand;
-import mark.butko.controller.command.WelcomePageCommand;
+import mark.butko.controller.command.WelcomeServletPageCommand;
 import mark.butko.model.service.CommentService;
 import mark.butko.model.service.ProposalService;
 import mark.butko.model.service.UserService;
@@ -48,9 +50,11 @@ public class Servlet extends HttpServlet {
 		commands.put("proposals", new ProposalsPaginationCommand(new ProposalService()));
 		//
 		commands.put("sign-up", new SignUpCommand());
-		commands.put("welcomePage", new WelcomePageCommand());
+		commands.put("welcomePage", new WelcomeServletPageCommand());
 		commands.put("users", new UserListCommand(new UserService()));
 		commands.put("change_role", new ChangeRoleCommand(new UserService()));
+		commands.put("acceptedProposals", new MasterProposalsListCommand(new ProposalService()));
+		commands.put("perform", new PerformProposalCommand(new ProposalService(), new UserService()));
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

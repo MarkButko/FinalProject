@@ -57,6 +57,7 @@ public class UserListCommand implements Command {
 
 		session.setAttribute("roles", User.Role.values());
 		session.setAttribute("users", users);
+
 		return JSPPath.ADMIN_PAGE;
 	}
 

@@ -6,6 +6,10 @@ import java.util.Map;
 
 public class Proposal {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private User author;
 	private User master;
@@ -16,9 +20,7 @@ public class Proposal {
 	private String rejectionCause;
 
 	private Status status;
-	// comment date may be added
 	private String comment;
-	// change to JavaMoney
 	private Long price;
 
 	public Proposal() {
@@ -33,9 +35,13 @@ public class Proposal {
 
 	@Override
 	public String toString() {
-		return "Proposal [id=" + id + ", author=" + author.getName() + ", master=" + master.getName() + ", manager="
-				+ manager.getName() + ", date=" + date + ", message=" + message + ", rejectionCause=" + rejectionCause
-				+ ", status=" + status + ", comment=" + comment + ", price=" + price + "]";
+		return "Proposal [id=" + id +
+				", date=" + date +
+				", message=" + message +
+				", rejectionCause=" + rejectionCause
+				+ ", status=" + status +
+				", comment=" + comment +
+				", price=" + price + "]";
 	}
 
 	public Integer getId() {

@@ -11,5 +11,6 @@ public final class ServletPath {
 	public static final String PAGINATION = "/get/customer/proposalsPagination";// not good
 	public static final String WELCOME_PAGE = "/get/welcomePage";
 	public static final String ADMIN_PAGE = "/get/admin/users";
+	public static final String MASTER_PAGE = "/get/master/acceptedProposals";
 
 }

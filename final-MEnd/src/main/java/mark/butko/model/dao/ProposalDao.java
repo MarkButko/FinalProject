@@ -3,7 +3,11 @@ package mark.butko.model.dao;
 import java.util.List;
 
 import mark.butko.dto.Comment;
+import mark.butko.model.criteria.FilterCriteria;
+import mark.butko.model.criteria.PageCriteria;
+import mark.butko.model.criteria.SortCriteria;
 import mark.butko.model.entity.Proposal;
+import mark.butko.model.entity.Proposal.Status;
 
 public interface ProposalDao extends GenericDao<Proposal> {
 
@@ -16,4 +20,15 @@ public interface ProposalDao extends GenericDao<Proposal> {
 	Integer countAll();
 
 	Integer countComments();
+
+	List<Proposal> findByFiltersSortedList(List<? extends FilterCriteria> filters, SortCriteria order);
+
+	List<Proposal> findMasterList(List<? extends FilterCriteria> filters, SortCriteria sortCriteria);
+
+	List<Proposal> findPage(List<? extends FilterCriteria> filters, SortCriteria sortCriteria,
+			PageCriteria pageCriteria);
+
+	Integer countByStatus(Status status);
+
+	Integer countPages(List<? extends FilterCriteria> filters);
 }

@@ -1,5 +1,15 @@
 package mark.butko.model.dao.impl;
 
+import static mark.butko.model.dao.impl.ProposalMySQLQuery.COUNT_ALL;
+import static mark.butko.model.dao.impl.ProposalMySQLQuery.FIND_ALL;
+import static mark.butko.model.dao.impl.ProposalMySQLQuery.FIND_ALL_JOIN_ON_CUSTOMER;
+import static mark.butko.model.dao.impl.ProposalMySQLQuery.FIND_ALL_JOIN_ON_MANAGER;
+import static mark.butko.model.dao.impl.ProposalMySQLQuery.FIND_ALL_LEFT_JOIN_ON_CUSTOMER;
+import static mark.butko.model.dao.impl.ProposalMySQLQuery.FIND_ALL_LEFT_JOIN_ON_MANAGER;
+import static mark.butko.model.dao.impl.ProposalMySQLQuery.FIND_ALL_LEFT_JOIN_ON_MASTER;
+import static mark.butko.model.dao.impl.ProposalMySQLQuery.ORDER_BY;
+import static mark.butko.model.dao.impl.ProposalMySQLQuery.WHERE;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -7,16 +17,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import mark.butko.dto.Comment;
+import mark.butko.model.criteria.CriteriaUtil;
+import mark.butko.model.criteria.FilterCriteria;
+import mark.butko.model.criteria.PageCriteria;
+import mark.butko.model.criteria.SortCriteria;
 import mark.butko.model.dao.ProposalDao;
 import mark.butko.model.dao.mapper.CommentMapper;
 import mark.butko.model.dao.mapper.ProposalMapper;
+import mark.butko.model.dao.mapper.UserMapper;
 import mark.butko.model.entity.Proposal;
+import mark.butko.model.entity.Proposal.Status;
+import mark.butko.model.entity.User;
 
 public class JDBCProposalDao implements ProposalDao {
 
@@ -26,6 +45,197 @@ public class JDBCProposalDao implements ProposalDao {
 
 	public JDBCProposalDao(Connection connection) {
 		this.connection = connection;
+	}
+
+	@Override
+	public List<Proposal> findByFiltersSortedList(List<? extends FilterCriteria> filters, SortCriteria order) {
+		List<Proposal> list = new ArrayList<>();
+
+		String query = FIND_ALL + (filters.isEmpty() ? "" : WHERE)
+				+ CriteriaUtil.createSQLString(filters)
+				+ ORDER_BY + order.getSQLString();
+
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			CriteriaUtil.setParameters(filters, statement, 1);
+			ResultSet resultSet = statement.executeQuery();
+
+			ProposalMapper mapper = new ProposalMapper();
+			while (resultSet.next()) {
+				list.add(mapper.extractFromResultSet(resultSet));
+			}
+		} catch (SQLException e) {
+			LOGGER.warn("SQL exception on query : {}", query);
+		}
+		return list;
+	}
+
+	@Override
+	public List<Proposal> findMasterList(List<? extends FilterCriteria> filters, SortCriteria sortCriteria) {
+		List<Proposal> list = new ArrayList<>();
+
+		String queryWithCustomers = FIND_ALL_JOIN_ON_CUSTOMER
+				+ (filters.isEmpty() ? "" : WHERE)
+				+ CriteriaUtil.createSQLString(filters)
+				+ (sortCriteria == null ? "" : ORDER_BY)
+				+ sortCriteria.getSQLString();
+		LOGGER.debug("findMasterList: queryWithCustomers : {}", queryWithCustomers);
+
+		String queryWithManagers = FIND_ALL_JOIN_ON_MANAGER
+				+ (filters.isEmpty() ? "" : WHERE)
+				+ CriteriaUtil.createSQLString(filters)
+				+ (sortCriteria == null ? "" : ORDER_BY)
+				+ sortCriteria.getSQLString();
+		LOGGER.debug("findMasterList: queryWithManagers : {}", queryWithManagers);
+
+		try {
+			connection.setAutoCommit(false);
+		} catch (SQLException e1) {
+			LOGGER.warn("findMasterList : Connection autoCommit failed while setting to false");
+		}
+
+		try (PreparedStatement statementCustomers = connection.prepareStatement(queryWithCustomers);
+				PreparedStatement statementManagers = connection.prepareStatement(queryWithManagers)) {
+
+			CriteriaUtil.setParameters(filters, statementCustomers, 1);
+			CriteriaUtil.setParameters(filters, statementManagers, 1);
+
+			ResultSet resultSetWithCustomers = statementCustomers.executeQuery();
+			ResultSet resultSetWithManagers = statementManagers.executeQuery();
+
+			LOGGER.debug("findMasterList : executed");
+
+			ProposalMapper proposalMapper = new ProposalMapper();
+			UserMapper userMapper = new UserMapper();
+
+			while (resultSetWithCustomers.next()
+					& resultSetWithManagers.next()) {
+				Proposal proposal = proposalMapper.extractFromResultSet(resultSetWithCustomers);
+
+				User customer = userMapper.extractFromResultSet(resultSetWithCustomers);
+				User manager = userMapper.extractFromResultSet(resultSetWithManagers);
+
+				proposal.setAuthor(customer);
+				proposal.setManager(manager);
+
+				list.add(proposal);
+			}
+
+			connection.commit();
+			LOGGER.debug("findMasterList : commited");
+			connection.setAutoCommit(true);
+			LOGGER.debug("findMasterList : autocom true ");
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				LOGGER.warn("findMasterList : Rollback failed ");
+			}
+			LOGGER.warn("findMasterList : SQL exception on queries : {} || {}", queryWithCustomers, queryWithManagers);
+		}
+		return list;
+	}
+
+	@Override
+	public List<Proposal> findPage(List<? extends FilterCriteria> filters, SortCriteria sortCriteria,
+			PageCriteria pageCriteria) {
+		Map<Integer, Proposal> proposals = new HashMap<>();
+		Map<Integer, User> users = new HashMap<>();
+
+		String queryWithCustomers = FIND_ALL_LEFT_JOIN_ON_CUSTOMER
+				+ (filters.isEmpty() ? "" : WHERE)
+				+ CriteriaUtil.createSQLString(filters)
+				+ (sortCriteria == null ? "" : ORDER_BY)
+				+ sortCriteria.getSQLString()
+				+ (pageCriteria == null ? "" : pageCriteria.getSQLString());
+		LOGGER.debug("findPage: queryWithCustomers : {}", queryWithCustomers);
+
+		String queryWithManagers = FIND_ALL_LEFT_JOIN_ON_MANAGER
+				+ (filters.isEmpty() ? "" : WHERE)
+				+ CriteriaUtil.createSQLString(filters)
+				+ (sortCriteria == null ? "" : ORDER_BY)
+				+ sortCriteria.getSQLString()
+				+ (pageCriteria == null ? "" : pageCriteria.getSQLString());
+		LOGGER.debug("findPage: queryWithManagers : {}", queryWithManagers);
+
+		String queryWithMasters = FIND_ALL_LEFT_JOIN_ON_MASTER
+				+ (filters.isEmpty() ? "" : WHERE)
+				+ CriteriaUtil.createSQLString(filters)
+				+ (sortCriteria == null ? "" : ORDER_BY)
+				+ sortCriteria.getSQLString()
+				+ (pageCriteria == null ? "" : pageCriteria.getSQLString());
+		LOGGER.debug("findPage: queryWithManagers : {}", queryWithMasters);
+
+		try {
+			connection.setAutoCommit(false);
+		} catch (SQLException e1) {
+			LOGGER.warn("findPage : Connection autoCommit failed while setting to false");
+		}
+
+		try (PreparedStatement statementCustomers = connection.prepareStatement(queryWithCustomers);
+				PreparedStatement statementManagers = connection.prepareStatement(queryWithManagers);
+				PreparedStatement statementMasters = connection.prepareStatement(queryWithMasters)) {
+			LOGGER.debug("findPage : prepared");
+
+			CriteriaUtil.setParameters(filters, pageCriteria, statementCustomers, 1);
+			CriteriaUtil.setParameters(filters, pageCriteria, statementManagers, 1);
+			CriteriaUtil.setParameters(filters, pageCriteria, statementMasters, 1);
+			LOGGER.debug("findPage : parameters set");
+
+			ResultSet resultSetWithCustomers = statementCustomers.executeQuery();
+			ResultSet resultSetWithManagers = statementManagers.executeQuery();
+			ResultSet resultSetWithMasters = statementMasters.executeQuery();
+			LOGGER.debug("findPage : executed ");
+
+			ProposalMapper proposalMapper = new ProposalMapper();
+			UserMapper userMapper = new UserMapper();
+
+			while (resultSetWithCustomers.next()) {
+				Proposal proposal = proposalMapper.extractFromResultSet(resultSetWithCustomers);
+				User customer = userMapper.extractFromResultSet(resultSetWithCustomers);
+
+				proposal = proposalMapper.makeUnique(proposals, proposal);
+				customer = userMapper.makeUnique(users, customer);
+				LOGGER.debug("findPage : customer.hash = {} ", System.identityHashCode(customer));
+
+				proposal.setAuthor(customer);
+				proposals.put(proposal.getId(), proposal);
+			}
+
+			while (resultSetWithManagers.next()) {
+				Integer proposalId = resultSetWithManagers.getInt(ProposalColumn.ID);
+				User manager = userMapper.extractFromResultSet(resultSetWithManagers);
+
+				if (manager != null) {
+					manager = userMapper.makeUnique(users, manager);
+					LOGGER.debug("findPage : manager.hash = {} ", System.identityHashCode(manager));
+					proposals.get(proposalId).setManager(manager);
+				}
+			}
+
+			while (resultSetWithMasters.next()) {
+				Integer proposalId = resultSetWithMasters.getInt(ProposalColumn.ID);
+				User master = userMapper.extractFromResultSet(resultSetWithMasters);
+
+				if (master != null) {
+					master = userMapper.makeUnique(users, master);
+					LOGGER.debug("findPage : master.hash = {} ", System.identityHashCode(master));
+					proposals.get(proposalId).setMaster(master);
+				}
+			}
+
+			connection.commit();
+			LOGGER.debug("findMasterList : commited");
+			connection.setAutoCommit(true);
+			LOGGER.debug("findMasterList : autocom true ");
+		} catch (SQLException e) {
+			LOGGER.warn("findMasterList : SQL exception on during transaction");
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				LOGGER.warn("findMasterList : Rollback failed ");
+			}
+		}
+		return new ArrayList<>(proposals.values());
 	}
 
 	@Override
@@ -97,13 +307,15 @@ public class JDBCProposalDao implements ProposalDao {
 			statement.setString(4, proposal.getComment());
 			statement.setLong(5, proposal.getPrice());
 
-			if (proposal.getManager() != null) {
-				statement.setInt(6, proposal.getManager().getId());
+			if (proposal.getMaster() != null) {
+				statement.setInt(6, proposal.getMaster().getId());
+				LOGGER.debug("update : Master ID set : {}", proposal.getMaster().getId());
 			} else {
 				statement.setNull(6, Types.INTEGER);
 			}
 			if (proposal.getManager() != null) {
-				statement.setInt(7, proposal.getMaster().getId());
+				statement.setInt(7, proposal.getManager().getId());
+				LOGGER.debug("update : Manager ID set : {}", proposal.getManager().getId());
 			} else {
 				statement.setNull(7, Types.INTEGER);
 			}
@@ -163,6 +375,38 @@ public class JDBCProposalDao implements ProposalDao {
 	@Override
 	public Integer countAll() {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(ProposalMySQLQuery.COUNT_ALL)) {
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public Integer countByStatus(Status status) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(ProposalMySQLQuery.COUNT_BY_STATUS)) {
+			preparedStatement.setInt(1, status.getDbValue());
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public Integer countPages(List<? extends FilterCriteria> filters) {
+		String query = COUNT_ALL
+				+ (filters.isEmpty() ? "" : WHERE)
+				+ CriteriaUtil.createSQLString(filters);
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+			CriteriaUtil.setParameters(filters, preparedStatement, 1);
 			ResultSet rs = preparedStatement.executeQuery();
 			if (rs.next()) {
 				return rs.getInt("count");

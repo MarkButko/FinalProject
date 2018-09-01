@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import mark.butko.controller.JSPPath;
 import mark.butko.model.entity.Proposal;
 import mark.butko.model.entity.User;
+import mark.butko.model.entity.User.Role;
 import mark.butko.model.service.ProposalService;
 import mark.butko.model.service.UserService;
 
@@ -68,7 +69,7 @@ public class ProposalsPaginationCommand implements Command {
 		request.setAttribute("lastPage", lastPage);
 
 		LOGGER.debug("currentPage = {}, lastPage = {}", currentPage, lastPage);
-		return JSPPath.PROPOSALS;
+		return user.getRole() == Role.CUSTOMER ? JSPPath.PROPOSALS : JSPPath.MASTER_PAGE;
 	}
 
 }

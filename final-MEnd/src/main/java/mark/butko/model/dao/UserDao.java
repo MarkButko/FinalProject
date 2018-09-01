@@ -14,4 +14,12 @@ public interface UserDao extends GenericDao<User> {
 	Integer countProposals(Integer userId);
 
 	List<User> findByFiltersSortedList(List<? extends FilterCriteria> filters, SortCriteria order);
+
+	User findCustomerByProposalId(Integer proposalId);
+
+	Optional<User> findManagerByProposalId(Integer proposalId);
+
+	Optional<User> findMasterByProposalId(Integer proposalId);
+
+	Integer withdraw(Long price, User customer);
 }
