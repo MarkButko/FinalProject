@@ -1,4 +1,4 @@
-package mark.butko.controller.util;
+package mark.butko.controller.checker;
 
 import java.util.Locale;
 
