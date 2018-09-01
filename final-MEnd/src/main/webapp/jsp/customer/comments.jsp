@@ -10,7 +10,7 @@
 		<ul class="nav navbar-nav">
 			<li><a href="${pageContext.request.contextPath}/get/customer/leaveProposal" class="custom-underline">Leave proposal</a></li>
 			<li><a href="${pageContext.request.contextPath}/get/customer/proposals" class="custom-underline">My proposals</a></li>
-			<li><a href="#" class="custom-underline" class="custom-underline active">Comments</a></li>
+			<li><a href="#" class="custom-underline active">Comments</a></li>
 			<hr />
 		</ul>
 	</div>

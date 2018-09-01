@@ -14,10 +14,19 @@
 
 input[value="previous"] {
 	float: none;
+	margin-bottom: 20px;
+	background-color: #C1AC99FF !important;
 }
 
 input[value="next"] {
 	float: right;
+	margin-bottom: 20px;
+	background-color: #C1AC99FF !important;
+}
+
+input[value="previous"]:hover,
+input[value="next"]:hover {
+	background-color: #A78A70FF !important;
 }
 
 .date {

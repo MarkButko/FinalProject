@@ -6,12 +6,6 @@
 
 
 <%@ include file="../../includes/before_nav.jsp"%>
-	<div class="menu">
-		<ul class="nav navbar-nav">
-			<li><a href="${pageContext.request.contextPath}/get/manager/proposals" class="custom-underline active">Proposals</a></li>
-			<hr />
-		</ul>
-	</div>
 	<%@ include file="../../includes/logout.jsp"%>
 <%@ include file="../../includes/after_nav.jsp"%>
 
@@ -22,9 +16,9 @@
 			<div class="col-md-4" id="filter-container">
 				<br>
 				<div class="container filter-div  fixed">
-					<form name="filter" action="/get/manager/filter">
+					<form name="filter" action="${pageContext.request.contextPath}/get/manager/acceptedProposals" method="POST">
 
-						<label for="status-filter"> Status: </label>
+						<label> Status: </label>
 						<select name="status_filter" class="form-control">
 							<option value="${status}">status</option>
 						</select>
@@ -46,62 +40,78 @@
 
 
 		<div class="col-md-8">
-			<cstm:proposals>
-				<div class="proposal-div">
-					<label class="date">${date}</label>
-					<label>${status}</label>
-					<hr />
-
-					<p>Author: ${author.name}</p>
-					<hr />
-					
-					<c:if test="${not empty master}">
-						<p>Master: ${master.name}</p>
+			<c:forEach var="proposal" items="${requestScope.proposals}">
+				<c:if test="${not empty proposal}">
+					<div class="proposal-div">
+						<label class="date">${proposal.date}</label>
+						<label>${proposal.status}</label>
 						<hr />
-					</c:if>
 
-					<h4>Proposal text:</h4>
-					<p>${message}</p>
-					<hr />
+						<p>Author: ${proposal.author.name}</p>
+						<hr />
+						
+						<c:if test="${not empty master}">
+							<p>Master: ${proposal.master.name}</p>
+							<hr />
+						</c:if>
 
-					<c:if test="${not empty rejection_cause}">
-						<h4>Rejection cause:</h4>
-						<p>${rejection_cause}</p>
-					</c:if>
+						<h4>Proposal text:</h4>
+						<p>${proposal.message}</p>
+						<hr />
 
-					<c:if test="${not empty price}">
-						<h4>Price: ${price}</h4>
-					</c:if>
+						<c:if test="${not empty rejection_cause}">
+							<h4>Rejection cause:</h4>
+							<p>${proposal.rejection_cause}</p>
+						</c:if>
 
-					<c:if test='${status.name eq "NEW"}'>
-						<button type="button" onclick="accept()" id="modal-button-accept" class="btn btn-default btn-accept">Accept</button>
-						<button type="button" onclick="reject()" id="modal-button-reject" class="btn btn-default btn-reject">Reject</button>
+						<c:if test="${not empty price}">
+							<h4>Price: ${proposal.price}</h4>
+						</c:if>
 
-						<!-- Modal window for acceppting or rejecting proposal -->
-						<div class="modal-window">
-							<div id="modal-wrapper-accept" class="modal modal-wrapper-accept">
-								<div class="modal-content-accept">
-									<button type="button" class="close">&times;</button>
-									<form action="/get/manager/accept" method="POST">
-										<input type="text" name="price" min="0" placeholder="Price" />
-										<button class="btn btn-default btn-modal">Submit</button>
-									</form>
+						<c:if test='${proposal.status == "NEW"}'>
+							<button type="button" onclick="accept()" id="modal-button-accept" class="btn btn-default btn-accept">Accept</button>
+							<button type="button" onclick="reject()" id="modal-button-reject" class="btn btn-default btn-reject">Reject</button>
+
+							<!-- Modal window for acceppting or rejecting proposal -->
+							<div class="modal-window">
+								<div id="modal-wrapper-accept" class="modal modal-wrapper-accept">
+									<div class="modal-content-accept">
+										<button type="button" class="close">&times;</button>
+										<form action="${pageContext.request.contextPath}/get/manager/accept" method="POST">
+											<input type="text" name="price" min="0" placeholder="Price" />
+											<button class="btn btn-default btn-modal">Submit</button>
+										</form>
+									</div>
 								</div>
-							</div>
 
-							<div id="modal-wrapper-reject" class="modal modal-wrapper-reject">
-								<div class="modal-content-reject">
-									<button class="close">&times;</button>
-									<form action="/get/manager/reject" method="POST">
-										<textarea name="rejection_cause" placeholder="Rejection cause" ></textarea>
-										<button class="btn btn-default btn-modal">Submit</button>
-									</form>
+								<div id="modal-wrapper-reject" class="modal modal-wrapper-reject">
+									<div class="modal-content-reject">
+										<button class="close">&times;</button>
+										<form action="${pageContext.request.contextPath}/get/manager/reject" method="POST">
+											<textarea name="rejection_cause" placeholder="Rejection cause" ></textarea>
+											<button class="btn btn-default btn-modal">Submit</button>
+										</form>
+									</div>
 								</div>
-							</div>
-						</div>	
-					</c:if>
-				</div><!--  proposal-div end -->	
-			</cstm:proposals>
+							</div>	
+						</c:if>
+					</div><!--  proposal-div end -->	
+				</c:if>
+			</c:forEach>
+
+			<div class="row">
+					<div class="col-md-offset-4 col-md-4 pagination-div">
+						<form action="${pageContext.request.contextPath}/get/manager/acceptedProposals" method="POST">
+							<c:if test="${currentPage > 1}">
+						    	<input type="submit" class="btn btn-default button-cool" name="futurePage" value="previous">
+						    </c:if>
+						    <c:if test="${currentPage < lastPage}">
+						    	<input type="submit" class="btn btn-default button-cool" name="futurePage" value="next">
+							</c:if>
+							<input type="hidden" name = "currentPage" value="${requestScope.currentPage}">
+						</form>
+					</div>
+				</div>
 		</div>			
 	</div> <!-- row div end-->
 </div>
