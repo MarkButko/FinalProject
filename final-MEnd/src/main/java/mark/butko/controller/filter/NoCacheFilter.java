@@ -32,9 +32,9 @@ public class NoCacheFilter implements Filter {
 		LOGGER.trace("path : {}", ((HttpServletRequest) request).getRequestURI());
 		HttpServletResponse response = (HttpServletResponse) resp;
 		response.setHeader("Cache-Control", "no-cache");
-		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Cache-Control", "must-revalidate");
+//		response.setHeader("Cache-Control", "no-store");
 		response.setDateHeader("Expires", 0);
-		response.setHeader("Pragma", "no-cache");
 		chain.doFilter(request, response);
 	}
 
