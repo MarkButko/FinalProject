@@ -1,5 +1,8 @@
 package mark.butko.controller.listener;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
@@ -22,14 +25,21 @@ public class SessionListener implements HttpSessionListener {
 		session.setAttribute("language", "EN");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void sessionDestroyed(HttpSessionEvent se) {
-		HttpSession session = se.getSession();
-		User user = (User) session.getAttribute("user");
-		session.removeAttribute("user");
-		session.invalidate();
-		LOGGER.info("Session invalidate for user : {}", user.getEmail());
 		LOGGER.info("Session Destroyed");
+		Set<String> loggedUsers = (HashSet<String>) se.getSession()
+				.getServletContext()
+				.getAttribute("loggedUsers");
+		User user = (User) se.getSession().getAttribute("user");
+		if (user != null) {
+			String userEmail = user.getEmail();
+			loggedUsers.remove(userEmail);
+			se.getSession()
+					.getServletContext()
+					.setAttribute("loggedUsers", loggedUsers);
+		}
 	}
 
 }

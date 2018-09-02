@@ -1,5 +1,7 @@
 package mark.butko.controller.listener;
 
+import java.util.HashSet;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -17,11 +19,11 @@ public class ContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent event) {
 		LOGGER.debug("Context loaded");
 		ServletContext servletContext = event.getServletContext();
+		servletContext.setAttribute("loggedUsers", new HashSet<String>());
 	}
 
 	@Override
-	public void contextDestroyed(ServletContextEvent sce) {
-
+	public void contextDestroyed(ServletContextEvent event) {
 	}
 
 }
