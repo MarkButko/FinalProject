@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <fmt:setLocale value="${language}" />
-<fmt:setBundle basename="i18n.menu.menu" />
+<fmt:setBundle basename="i18n.messages" />
 <!doctype html>
 <html lang="${language}">
 <head>
