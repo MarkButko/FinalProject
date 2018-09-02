@@ -20,8 +20,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mark.butko.controller.JSPPath;
-import mark.butko.controller.ServletPath;
+import mark.butko.controller.command.WelcomeServletPageCommand;
+import mark.butko.controller.path.JSPPath;
+import mark.butko.controller.path.ServletPath;
 import mark.butko.model.entity.User;
 import mark.butko.model.entity.User.Role;
 
@@ -62,9 +63,7 @@ public class AccessFilter implements Filter {
 			chain.doFilter(request, response);
 		} else {
 			LOGGER.info("access denied for user : {} {} on url : {}", user.getEmail(), user.getRole(), requestedPath);
-			request.getServletContext()
-					.getRequestDispatcher(JSPPath.PAGE_NOT_FOUND)
-					.forward(request, response);
+			new WelcomeServletPageCommand().execute(request, response);
 		}
 	}
 
