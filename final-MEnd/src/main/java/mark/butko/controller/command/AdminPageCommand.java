@@ -1,5 +1,6 @@
 package mark.butko.controller.command;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,13 +8,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mark.butko.controller.JSPPath;
+import mark.butko.controller.path.JSPPath;
 import mark.butko.model.criteria.FilterCriteria;
 import mark.butko.model.criteria.SortCriteria;
 import mark.butko.model.criteria.impl.EmailSortCriteria;
@@ -24,8 +27,8 @@ import mark.butko.model.criteria.impl.RoleFilterCriteria;
 import mark.butko.model.entity.User;
 import mark.butko.model.service.UserService;
 
-public class UserListCommand implements Command {
-	private static final Logger LOGGER = LogManager.getLogger(UserListCommand.class.getName());
+public class AdminPageCommand implements Command {
+	private static final Logger LOGGER = LogManager.getLogger(AdminPageCommand.class.getName());
 
 	private UserService userService;
 	private Map<String, SortCriteria> sortCriteriaMap = new HashMap<>();
@@ -37,13 +40,13 @@ public class UserListCommand implements Command {
 		sortCriteriaMap.put("email", new EmailSortCriteria());
 	}
 
-	public UserListCommand(UserService userService) {
+	public AdminPageCommand(UserService userService) {
 		super();
 		this.userService = userService;
 	}
 
 	@Override
-	public String execute(HttpServletRequest request) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
 		List<FilterCriteria> filters = new ArrayList<>();
@@ -58,7 +61,7 @@ public class UserListCommand implements Command {
 		session.setAttribute("roles", User.Role.values());
 		session.setAttribute("users", users);
 
-		return JSPPath.ADMIN_PAGE;
+		forward(request, response, JSPPath.ADMIN_PAGE);
 	}
 
 	private SortCriteria extractSortCriteria(HttpServletRequest request) {

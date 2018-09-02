@@ -1,14 +1,17 @@
 package mark.butko.controller.command;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mark.butko.controller.ServletPath;
+import mark.butko.controller.path.ServletPath;
 import mark.butko.model.entity.User;
-import mark.butko.model.service.UserDoesNotExist;
 import mark.butko.model.service.UserService;
+import mark.butko.model.service.exception.UserDoesNotExist;
 
 public class ChangeRoleCommand implements Command {
 
@@ -22,7 +25,7 @@ public class ChangeRoleCommand implements Command {
 	}
 
 	@Override
-	public String execute(HttpServletRequest request) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		String roleString = request.getParameter("role");
 		User.Role role = User.Role.valueOf(roleString);
@@ -35,7 +38,7 @@ public class ChangeRoleCommand implements Command {
 			LOGGER.warn("Attemt to change role of non existing userId : {}", id);
 		}
 
-		return ServletPath.ADMIN_PAGE;
+		redirect(request, response, ServletPath.ADMIN_PAGE);
 	}
 
 }

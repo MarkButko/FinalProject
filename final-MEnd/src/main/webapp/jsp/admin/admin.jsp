@@ -1,7 +1,7 @@
 <%@ include file="../../includes/before_head.jsp"%>
 	<link rel="stylesheet"	href="${pageContext.request.contextPath}/css/filter.css"	type="text/css">
 	<link rel="stylesheet"	href="${pageContext.request.contextPath}/css/admin.css"	type="text/css">
-	<title>Roles</title>
+	<title><fmt:message key="title.admin.users" /></title>
 <%@ include file="../../includes/after_head.jsp"%>
 
 <%@ include file="../../includes/before_nav.jsp"%>
@@ -13,9 +13,9 @@
 
 			<div class="col-md-4">
 				<div class="container filter-div  fixed">
-					<form name="filter" action="${pageContext.request.contextPath}/get/admin/users" method="POST">
+					<form name="filter" action="${pageContext.request.contextPath}/get/admin/users" method="GET">
 						<div class="form-group">
-							<label> Role: </label>
+							<label> <fmt:message key="label.role" />: </label>
 							<select name="role" class="form-control">
 								<c:forEach var="role" items="${roles}">
 									<c:if test="${role != 'GUEST'}">
@@ -26,7 +26,7 @@
 						</div>
 
 						<div class="form-group">
-							<label for="date">Date of registration:</label>
+							<label for="date"><fmt:message key="label.registration.date" />:</label>
 							<div class="form-inline" id="date">
 								<input type="date" name="date_from" class="form-control" placeholder="From" value="${date_from}"> 
 								<input type="date" name="date_to" class="form-control" placeholder="To" value="${date_to}">
@@ -34,23 +34,23 @@
 						</div>
 
 						<button type="submit" class="btn btn-default">
-							button.filter
+							<fmt:message key="button.filter" />
 						</button>
 					</form>
 				</div>
 
 				<div class="container sort-div fixed">
-					<form name="sort" action="${pageContext.request.contextPath}/get/admin/users" method="POST">
+					<form name="sort" action="${pageContext.request.contextPath}/get/admin/users" method="GET">
 						<div class="form-group">
 							<select name="sort-type" class="form-control">
-								<option value="email">sort.type.email</option>
-								<option value="date">sort.type.date</option>
-								<option value="name">sort.type.name</option>
+								<option value="email"><fmt:message key="option.sort.date" /></option>
+								<option value="date"><fmt:message key="option.sort.email" /></option>
+								<option value="name"><fmt:message key="option.sort.name" /></option>
 							</select>
 						</div>
 
 						<button type="submit" class="btn btn-default">
-							button.sort
+							<fmt:message key="button.sort" />
 						</button>
 					</form>
 				</div>
@@ -61,19 +61,19 @@
 					<c:if test="${(not empty u) and user.id != u.id}">
 						<div class="user-div">
 
-							<label class="block">Date of registration: ${u.registrationDate}</label>
-							<label class="block">Name: ${u.name}</label>
-							<label class="block">Email: ${u.email}</label>
+							<label class="block"><fmt:message key="label.registration.date" />: ${u.registrationDate}</label>
+							<label class="block"><fmt:message key="label.name" />: ${u.name}</label>
+							<label class="block"><fmt:message key="label.email" />: ${u.email}</label>
 
 							<form action="${pageContext.request.contextPath}/get/admin/change_role" method="POST">		
-								<label> Role: </label>
+								<label> <fmt:message key="label.role" />: </label>
 								<select name="role" class="form-control">
 									<c:forEach var="role" items="${roles}">
 										<option value="${role}" ${u.role == role ? 'selected' : ''}>${role}</option>
 									</c:forEach>
 								</select>
 								<input type="hidden" name="id" value="${u.id}" />
-								<button type="submit" id="button-change-role" class="btn btn-default btn-change-role">Change role</button>
+								<button type="submit" id="button-change-role" class="btn btn-default btn-change-role"><fmt:message key="button.change.role" /></button>
 							</form>
 
 						</div><!--  user-div end -->
