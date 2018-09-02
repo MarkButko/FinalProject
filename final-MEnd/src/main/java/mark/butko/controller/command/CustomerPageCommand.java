@@ -1,7 +1,6 @@
 package mark.butko.controller.command;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,40 +19,42 @@ import mark.butko.controller.path.JSPPath;
 import mark.butko.model.criteria.FilterCriteria;
 import mark.butko.model.criteria.PageCriteria;
 import mark.butko.model.criteria.SortCriteria;
-import mark.butko.model.criteria.impl.proposal.ProposalDateFilterCriteria;
 import mark.butko.model.criteria.impl.proposal.ProposalDateSortCriteria;
+import mark.butko.model.criteria.impl.proposal.ProposalFilterByUserCriteria;
 import mark.butko.model.criteria.impl.proposal.ProposalPageCriteria;
-import mark.butko.model.criteria.impl.proposal.StatusFilterCriteria;
 import mark.butko.model.dao.impl.ProposalColumn;
 import mark.butko.model.entity.Proposal;
+import mark.butko.model.entity.User;
 import mark.butko.model.service.ProposalService;
 
-public class MasterPageCommand implements Command {
+public class CustomerPageCommand implements Command {
 
-	private static final Logger LOGGER = LogManager.getLogger(MasterPageCommand.class.getName());
+	private static final Logger LOGGER = LogManager.getLogger(CustomerPageCommand.class.getName());
 	private static final String DEFAULT_SORT_TYPE = ProposalColumn.DATE;
 	private static final Integer ROWS_ON_PAGE = 5;
 
 	private ProposalService proposalService;
-	private Map<String, SortCriteria> sortCriteriaMap = new HashMap<>();
 
+	private Map<String, SortCriteria> sortCriteriaMap = new HashMap<>();
 	{
 		sortCriteriaMap.put(ProposalColumn.DATE, new ProposalDateSortCriteria());
 	}
 
-	public MasterPageCommand(ProposalService proposalService) {
+	public CustomerPageCommand(ProposalService proposalService) {
 		super();
 		this.proposalService = proposalService;
 	}
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
 		List<FilterCriteria> filters = new ArrayList<>();
 
-		addIfExistsDateFilter(request, filters);
-		filters.add(new StatusFilterCriteria(Proposal.Status.ACCEPTED));
+		filters.add(new ProposalFilterByUserCriteria(user.getId()));
 
-		SortCriteria sortCriteria = extractSortCriteria(request);// default
+		SortCriteria sortCriteria = extractSortCriteriaOrDefault(request);// default :date
+		LOGGER.debug(" :: SortCriteria : {}", sortCriteria.getClass());
 		PageCriteria pageCriteria = extractPageCriteria(request);
 
 		Integer pageCount = proposalService.countPages(filters);
@@ -75,7 +76,7 @@ public class MasterPageCommand implements Command {
 		request.setAttribute("proposals", proposals);
 		request.setAttribute("currentPage", currentPage);
 
-		forward(request, response, JSPPath.MASTER_PAGE);
+		forward(request, response, JSPPath.CUSTOMER_PROPOSALS);
 	}
 
 	private PageCriteria extractPageCriteria(HttpServletRequest request) {
@@ -106,7 +107,7 @@ public class MasterPageCommand implements Command {
 		return new ProposalPageCriteria(futurePage, ROWS_ON_PAGE);
 	}
 
-	private SortCriteria extractSortCriteria(HttpServletRequest request) {
+	private SortCriteria extractSortCriteriaOrDefault(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 
 		String sortType = Optional.ofNullable(request.getParameter("sort-type"))
@@ -128,30 +129,46 @@ public class MasterPageCommand implements Command {
 		return sortCriteriaMap.get(sortType);
 	}
 
-	private void addIfExistsDateFilter(HttpServletRequest request, List<FilterCriteria> filters) {
-		HttpSession session = request.getSession();
-
-		String dateFrom = Optional.ofNullable(request.getParameter("date_from"))
-				.orElse((String) session.getAttribute("date_from"));
-		String dateTo = Optional.ofNullable(request.getParameter("date_to"))
-				.orElse((String) session.getAttribute("date_to"));
-
-		LOGGER.debug("addIfExistsDateFilter :: dateFrom = {}", dateFrom);
-		LOGGER.debug("addIfExistsDateFilter :: dateTo = {}", dateTo);
-
-		if (dateFrom != null
-				&& dateTo != null
-				&& !dateFrom.isEmpty()
-				&& !dateTo.isEmpty()) {
-
-			LocalDate from = LocalDate.parse(dateFrom);
-			LocalDate to = LocalDate.parse(dateTo);
-
-			FilterCriteria proposalCreationDateFilterCriteria = new ProposalDateFilterCriteria(from, to);
-			filters.add(proposalCreationDateFilterCriteria);
-
-			session.setAttribute("date_from", dateFrom);
-			session.setAttribute("date_to", dateTo);
-		}
-	}
+//	private void addIfExistsDateFilter(HttpServletRequest request, List<FilterCriteria> filters) {
+//		HttpSession session = request.getSession();
+//
+//		String dateFrom = Optional.ofNullable(request.getParameter("date_from"))
+//				.orElse((String) session.getAttribute("date_from"));
+//		String dateTo = Optional.ofNullable(request.getParameter("date_to"))
+//				.orElse((String) session.getAttribute("date_to"));
+//
+//		LOGGER.debug("addIfExistsDateFilter :: dateFrom = {}", dateFrom);
+//		LOGGER.debug("addIfExistsDateFilter :: dateTo = {}", dateTo);
+//
+//		if (dateFrom != null
+//				&& dateTo != null
+//				&& !dateFrom.isEmpty()
+//				&& !dateTo.isEmpty()) {
+//
+//			LocalDate from = LocalDate.parse(dateFrom);
+//			LocalDate to = LocalDate.parse(dateTo);
+//
+//			FilterCriteria proposalCreationDateFilterCriteria = new ProposalDateFilterCriteria(from, to);
+//			filters.add(proposalCreationDateFilterCriteria);
+//
+//			session.setAttribute("date_from", dateFrom);
+//			session.setAttribute("date_to", dateTo);
+//		}
+//	}
+//
+//	private void addIfExistsStatusFilter(HttpServletRequest request, List<FilterCriteria> filters) {
+//		HttpSession session = request.getSession();
+//
+//		String status = Optional.ofNullable(request.getParameter("status_filter"))
+//				.orElse((String) session.getAttribute("status_filter"));
+//
+//		LOGGER.debug("addIfExistsStatusFilter :: status_filter = {}", status);
+//
+//		if (status != null && !status.isEmpty()) {
+//			FilterCriteria statusFilterCriteria = new StatusFilterCriteria(Proposal.Status.valueOf(status));
+//			filters.add(statusFilterCriteria);
+//
+//			session.setAttribute("status", status);
+//		}
+//	}
 }

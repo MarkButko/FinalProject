@@ -1,11 +1,14 @@
 package mark.butko.controller.command;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mark.butko.controller.ServletPath;
+import mark.butko.controller.path.ServletPath;
 import mark.butko.model.service.ProposalService;
 
 public class CommentCommand implements Command {
@@ -18,7 +21,7 @@ public class CommentCommand implements Command {
 	}
 
 	@Override
-	public String execute(HttpServletRequest request) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		String comment = request.getParameter("comment");
 		String stringId = (String) request.getParameter("id");
@@ -27,6 +30,6 @@ public class CommentCommand implements Command {
 
 		LOGGER.info("userID = {}", id);
 
-		return ServletPath.PAGINATION;
+		redirect(request, response, ServletPath.PAGINATION);
 	}
 }

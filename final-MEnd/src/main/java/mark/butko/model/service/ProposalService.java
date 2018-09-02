@@ -27,7 +27,7 @@ public class ProposalService {
 		try (ProposalDao proposalDao = daoFactory.createProposalDao();
 				UserDao userDao = daoFactory.createUserDao()) {
 
-			User user = userDao.findById(userId);
+			User user = userDao.findByIdWithProposals(userId);
 			Proposal proposal = new Proposal(user, message);
 
 			proposalDao.create(proposal);
@@ -36,15 +36,33 @@ public class ProposalService {
 
 	public void comment(String comment, Integer id) {
 		try (ProposalDao proposalDao = daoFactory.createProposalDao()) {
-			Proposal proposal = proposalDao.findById(id);
-			proposal.setComment(comment);
-			proposalDao.update(proposal);
+			proposalDao.addComment(id, comment);
+		}
+	}
+
+	public Proposal getById(Integer proposalId) {
+		try (ProposalDao proposalDao = daoFactory.createProposalDao()) {
+			return proposalDao.findById(proposalId);
+		}
+	}
+
+	public void reject(Proposal proposal, Integer managerId) {
+		try (ProposalDao proposalDao = daoFactory.createProposalDao();
+				UserDao userDao = daoFactory.createUserDao()) {
+			proposalDao.reject(proposal, managerId);
 		}
 	}
 
 	public List<Proposal> getProposalsByUserId(Integer userId) {
 		try (ProposalDao proposalDao = daoFactory.createProposalDao()) {
 			return proposalDao.findByUserId(userId);
+		}
+	}
+
+	public void accept(Proposal proposal, Integer managerId) {
+		try (ProposalDao proposalDao = daoFactory.createProposalDao();
+				UserDao userDao = daoFactory.createUserDao()) {
+			proposalDao.accept(proposal, managerId);
 		}
 	}
 
@@ -155,8 +173,6 @@ public class ProposalService {
 			Optional<User> manager = userDao.findManagerByProposalId(proposalId);
 			User master = userDao.findById(masterId);
 
-			LOGGER.debug("perform : Master set : {}", master);
-
 			proposal.setAuthor(customer);
 			if (manager.isPresent()) {
 				proposal.setManager(manager.get());
@@ -164,6 +180,7 @@ public class ProposalService {
 			}
 			if (master != null) {
 				proposal.setMaster(master);
+				LOGGER.debug("perform : Master set : {}", master);
 			}
 			proposalDao.update(proposal);
 			userDao.withdraw(proposal.getPrice(), customer);

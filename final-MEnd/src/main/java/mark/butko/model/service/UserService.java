@@ -11,6 +11,11 @@ import mark.butko.model.criteria.SortCriteria;
 import mark.butko.model.dao.DaoFactory;
 import mark.butko.model.dao.UserDao;
 import mark.butko.model.entity.User;
+import mark.butko.model.service.exception.LoginException;
+import mark.butko.model.service.exception.UserAlreadyExistsException;
+import mark.butko.model.service.exception.UserDoesNotExist;
+import mark.butko.model.service.exception.WrongEmailException;
+import mark.butko.model.service.exception.WrongPasswordException;
 
 public class UserService {
 	private static final Logger LOGGER = LogManager.getLogger(UserService.class.getName());
@@ -27,10 +32,10 @@ public class UserService {
 				return user.get();
 			}
 			LOGGER.info("Wrong password : {} for email : {}", password, email);
-			throw new LoginException("Password does not match.");
+			throw new WrongPasswordException("Password does not match.");
 		}
 		LOGGER.info("Wrong email : {}", email);
-		throw new LoginException("User with email " + email + " is not found.");
+		throw new WrongEmailException("User with email " + email + " is not found.");
 	}
 
 	public User getByEmail(String email) {
@@ -67,7 +72,7 @@ public class UserService {
 
 	public void changeRole(Integer userId, User.Role role) throws UserDoesNotExist {
 		try (UserDao userDao = daoFactory.createUserDao()) {
-			User user = userDao.findById(userId);
+			User user = userDao.findByIdWithProposals(userId);
 			if (user != null) {
 				user.setRole(role);
 				userDao.update(user);

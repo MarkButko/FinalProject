@@ -22,4 +22,8 @@ public interface UserDao extends GenericDao<User> {
 	Optional<User> findMasterByProposalId(Integer proposalId);
 
 	Integer withdraw(Long price, User customer);
+
+	User findById(int Id);
+
+	User findByIdWithProposals(int id);
 }

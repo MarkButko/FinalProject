@@ -28,9 +28,9 @@ import mark.butko.model.dao.impl.ProposalColumn;
 import mark.butko.model.entity.Proposal;
 import mark.butko.model.service.ProposalService;
 
-public class MasterPageCommand implements Command {
+public class ManagerPageCommand implements Command {
 
-	private static final Logger LOGGER = LogManager.getLogger(MasterPageCommand.class.getName());
+	private static final Logger LOGGER = LogManager.getLogger(ManagerPageCommand.class.getName());
 	private static final String DEFAULT_SORT_TYPE = ProposalColumn.DATE;
 	private static final Integer ROWS_ON_PAGE = 5;
 
@@ -41,17 +41,18 @@ public class MasterPageCommand implements Command {
 		sortCriteriaMap.put(ProposalColumn.DATE, new ProposalDateSortCriteria());
 	}
 
-	public MasterPageCommand(ProposalService proposalService) {
+	public ManagerPageCommand(ProposalService proposalService) {
 		super();
 		this.proposalService = proposalService;
 	}
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		List<FilterCriteria> filters = new ArrayList<>();
 
 		addIfExistsDateFilter(request, filters);
-		filters.add(new StatusFilterCriteria(Proposal.Status.ACCEPTED));
+		addIfExistsStatusFilter(request, filters);
 
 		SortCriteria sortCriteria = extractSortCriteria(request);// default
 		PageCriteria pageCriteria = extractPageCriteria(request);
@@ -71,11 +72,12 @@ public class MasterPageCommand implements Command {
 			currentPage = lastPage;
 		}
 
+		session.setAttribute("statuses", Proposal.Status.values());
 		request.setAttribute("lastPage", lastPage);
 		request.setAttribute("proposals", proposals);
 		request.setAttribute("currentPage", currentPage);
 
-		forward(request, response, JSPPath.MASTER_PAGE);
+		forward(request, response, JSPPath.MANAGER_PAGE);
 	}
 
 	private PageCriteria extractPageCriteria(HttpServletRequest request) {
@@ -152,6 +154,22 @@ public class MasterPageCommand implements Command {
 
 			session.setAttribute("date_from", dateFrom);
 			session.setAttribute("date_to", dateTo);
+		}
+	}
+
+	private void addIfExistsStatusFilter(HttpServletRequest request, List<FilterCriteria> filters) {
+		HttpSession session = request.getSession();
+
+		String status = Optional.ofNullable(request.getParameter("status_filter"))
+				.orElse((String) session.getAttribute("status_filter"));
+
+		LOGGER.debug("addIfExistsStatusFilter :: status_filter = {}", status);
+
+		if (status != null && !status.isEmpty()) {
+			FilterCriteria statusFilterCriteria = new StatusFilterCriteria(Proposal.Status.valueOf(status));
+			filters.add(statusFilterCriteria);
+
+			session.setAttribute("status", status);
 		}
 	}
 }

@@ -10,6 +10,9 @@ public final class UserMySQLQuery {
 			"name = ?, email = ?, password = ?, money = ?, role = ? " +
 			"WHERE user_id = ?";
 
+	public static final String FIND_BY_ID_WITH_PROPOSALS = "SELECT * FROM user JOIN proposal ON" +
+			" user_id = proposal.author_id WHERE user_id = ?";
+
 	public static final String FIND_BY_ID = "SELECT * FROM user WHERE user_id = ?";
 
 	public static final String FIND_CUSTOMER_BY_PROPOSAL_ID = "SELECT * FROM user JOIN proposal" +

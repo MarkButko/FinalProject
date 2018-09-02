@@ -31,4 +31,10 @@ public interface ProposalDao extends GenericDao<Proposal> {
 	Integer countByStatus(Status status);
 
 	Integer countPages(List<? extends FilterCriteria> filters);
+
+	Integer addComment(int id, String comment);
+
+	Integer reject(Proposal proposal, Integer managerId);
+
+	void accept(Proposal proposal, Integer managerId);
 }

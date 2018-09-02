@@ -1,8 +1,8 @@
-package mark.butko.controller;
+package mark.butko.controller.path;
 
 public final class JSPPath {
 
-	public static final String PROPOSALS = "/jsp/customer/my_proposals.jsp";
+	public static final String CUSTOMER_PROPOSALS = "/jsp/customer/my_proposals.jsp";
 	public static final String LOGIN = "/jsp/login.jsp";
 	public static final String SIGN_UP = "/jsp/sign-up.jsp";
 	public static final String EXCEPTION = "/500.jsp";

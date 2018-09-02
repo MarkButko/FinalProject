@@ -1,13 +1,16 @@
 package mark.butko.controller.command;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mark.butko.controller.JSPPath;
+import mark.butko.controller.path.JSPPath;
 import mark.butko.dto.Comment;
 import mark.butko.model.service.CommentService;
 
@@ -17,46 +20,53 @@ public class CommentsCommand implements Command {
 
 	private CommentService commentService;
 	private final int ROWS_ON_PAGE = 5;
-	private int currentPage = 1;
 
 	public CommentsCommand(CommentService commentService) {
 		this.commentService = commentService;
 	}
 
 	@Override
-	public String execute(HttpServletRequest request) {
-		Integer pageNumber;
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Integer futurePage;
+		Integer currentPage;
+		List<Comment> comments;
+		String currentPageString = request.getParameter("currentPage");
 
-		String page = request.getParameter("page");
-		if ("previous".equals(page)) {
-			pageNumber = currentPage - 1;
-		} else if ("next".equals(page)) {
-			pageNumber = currentPage + 1;
-		} else {
-			pageNumber = currentPage;
-		}
-		currentPage = pageNumber;
-
-		Integer offset = (pageNumber - 1) * ROWS_ON_PAGE;
-
-		List<Comment> comments = commentService.getCommentsPageOrderedByDate(ROWS_ON_PAGE, offset);
-
-		if (comments == null || comments.isEmpty()) {
-			comments = commentService.getCommentsPageOrderedByDate(ROWS_ON_PAGE, 0);
+		if (currentPageString == null || currentPageString.isEmpty()) {
+			LOGGER.debug(":: currentPage = {}", currentPageString);
 			currentPage = 1;
+		} else {
+			currentPage = Integer.parseInt(currentPageString);
 		}
+
+		String futurePageString = request.getParameter("futurePage");
+		if ("previous".equals(futurePageString)) {
+			futurePage = currentPage - 1;
+		} else if ("next".equals(futurePageString)) {
+			futurePage = currentPage + 1;
+		} else {
+			futurePage = currentPage;
+		}
+		currentPage = futurePage;
 
 		Integer commentsAmount = commentService.countAll();
 		Integer lastPage = commentsAmount / ROWS_ON_PAGE
 				+ ((commentsAmount % ROWS_ON_PAGE) == 0 ? 0 : 1);
-		LOGGER.debug("commentsAmount = {}, commentsAmount % onPage = {}", commentsAmount,
-				(commentsAmount % ROWS_ON_PAGE));
+
+		if (lastPage > currentPage) {
+			Integer offset = (currentPage - 1) * ROWS_ON_PAGE;
+			comments = commentService.getCommentsPageOrderedByDate(ROWS_ON_PAGE, offset);
+		} else {
+			Integer offset = (lastPage - 1) * ROWS_ON_PAGE;
+			comments = commentService.getCommentsPageOrderedByDate(ROWS_ON_PAGE, offset);
+			currentPage = lastPage;
+		}
 
 		request.setAttribute("comments", comments);
 		request.setAttribute("currentPage", currentPage);
 		request.setAttribute("lastPage", lastPage);
 
 		LOGGER.debug("currentPage = {}, lastPage = {}", currentPage, lastPage);
-		return JSPPath.COMMENTS;
+		forward(request, response, JSPPath.COMMENTS);
 	}
 }

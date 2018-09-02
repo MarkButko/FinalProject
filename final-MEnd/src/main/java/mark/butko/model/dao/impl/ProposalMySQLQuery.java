@@ -10,6 +10,12 @@ public final class ProposalMySQLQuery {
 			"message = ?, status = ?, rejection_cause = ?, comment = ?, price = ?, master_id = ?, manager_id = ? " +
 			"WHERE proposal_id = ?";
 
+	public static final String COMMENT = "UPDATE proposal SET comment = ? WHERE proposal_id = ?";
+
+	public static final String REJECT = "UPDATE proposal SET rejection_cause = ?, manager_id = ?, status = ? WHERE proposal_id = ?";
+
+	public static final String ACCEPT = "UPDATE proposal SET price = ?, manager_id = ?, status = ? WHERE proposal_id = ?";
+
 	public static final String FIND_BY_ID = "SELECT * FROM proposal WHERE proposal_id = ?";
 
 	public static final String FIND_ALL = "SELECT * FROM proposal";
@@ -51,4 +57,5 @@ public final class ProposalMySQLQuery {
 	public static final String ORDER_BY = " ORDER BY ";
 
 	public static final String AND = " AND ";
+
 }

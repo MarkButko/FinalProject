@@ -1,15 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Lato|Raleway');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto');
 
 body {
 	background-image: url(../img/BackGroundUser.png);
 	background-repeat: repeat;
-	font-family: "Lato";
+	font-family: "Lato", 'Open Sans', sans-serif;
 	font-size: 16px;
 	color: #373737;
 }
 
 h1, h2 {
-	font-family: "Raleway";
+	font-family: "Raleway", 'Open Sans', "Roboto", sans-serif;
 	font-weight: 300;
 }
 
@@ -53,6 +54,29 @@ a:hover{
 
 nav + div {
 	margin-top: 80px;
+}
+
+
+input[value="previous"] {
+	float: none;
+	margin-bottom: 20px;
+	background-color: #C1AC99FF !important;
+}
+
+input[value="next"] {
+	float: right;
+	margin-bottom: 20px;
+	background-color: #C1AC99FF !important;
+}
+
+input[value="previous"]:hover,
+input[value="next"]:hover {
+	background-color: #A78A70FF !important;
+}
+
+p.error {
+	color:#BF4C3FFF;
+	font-size: 12px;
 }
 
 .block {

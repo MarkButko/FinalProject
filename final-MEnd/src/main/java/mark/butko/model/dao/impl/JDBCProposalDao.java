@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -138,7 +139,7 @@ public class JDBCProposalDao implements ProposalDao {
 	@Override
 	public List<Proposal> findPage(List<? extends FilterCriteria> filters, SortCriteria sortCriteria,
 			PageCriteria pageCriteria) {
-		Map<Integer, Proposal> proposals = new HashMap<>();
+		Map<Integer, Proposal> proposals = new LinkedHashMap<>();
 		Map<Integer, User> users = new HashMap<>();
 
 		String queryWithCustomers = FIND_ALL_LEFT_JOIN_ON_CUSTOMER
@@ -294,6 +295,47 @@ public class JDBCProposalDao implements ProposalDao {
 			e.printStackTrace();// log
 		}
 		return rowAffected;
+	}
+
+	@Override
+	public Integer addComment(int id, String comment) {
+		int rowAffected = 0;
+		try (PreparedStatement statement = connection.prepareStatement(ProposalMySQLQuery.COMMENT)) {
+			statement.setString(1, comment);
+			statement.setInt(2, id);
+			rowAffected = statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();// log
+		}
+		return rowAffected;
+	}
+
+	@Override
+	public Integer reject(Proposal proposal, Integer managerId) {
+		int rowAffected = 0;
+		try (PreparedStatement statement = connection.prepareStatement(ProposalMySQLQuery.REJECT)) {
+			statement.setString(1, proposal.getRejectionCause());
+			statement.setInt(2, managerId);
+			statement.setInt(3, Proposal.Status.REJECTED.getDbValue());
+			statement.setInt(4, proposal.getId());
+			rowAffected = statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();// log
+		}
+		return rowAffected;
+	}
+
+	@Override
+	public void accept(Proposal proposal, Integer managerId) {
+		try (PreparedStatement statement = connection.prepareStatement(ProposalMySQLQuery.ACCEPT)) {
+			statement.setLong(1, proposal.getPrice());
+			statement.setInt(2, managerId);
+			statement.setInt(3, Proposal.Status.ACCEPTED.getDbValue());
+			statement.setInt(4, proposal.getId());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();// log
+		}
 	}
 
 	@Override

@@ -165,12 +165,12 @@ public class JDBCUserDao implements UserDao {
 	}
 
 	@Override
-	public User findById(int id) {
+	public User findByIdWithProposals(int id) {
 
 		User user = null;
 		Proposal proposal;
 
-		try (PreparedStatement statement = connection.prepareStatement(UserMySQLQuery.FIND_BY_ID)) {
+		try (PreparedStatement statement = connection.prepareStatement(UserMySQLQuery.FIND_BY_ID_WITH_PROPOSALS)) {
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 
@@ -183,6 +183,26 @@ public class JDBCUserDao implements UserDao {
 					proposal = proposalMapper.extractFromResultSet(resultSet);
 					user.getProposals().add(proposal);
 				} while (resultSet.next());
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();// log
+		}
+
+		return user;
+	}
+
+	@Override
+	public User findById(int id) {
+
+		User user = null;
+		try (PreparedStatement statement = connection.prepareStatement(UserMySQLQuery.FIND_BY_ID)) {
+			statement.setInt(1, id);
+			ResultSet resultSet = statement.executeQuery();
+
+			UserMapper userMapper = new UserMapper();
+			if (resultSet.next()) {
+				user = userMapper.extractFromResultSet(resultSet);
 			}
 
 		} catch (SQLException e) {
