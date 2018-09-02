@@ -1,18 +1,20 @@
 package mark.butko.controller.command;
 
-import java.util.Locale;
+import java.io.IOException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mark.butko.controller.JSPPath;
-import mark.butko.controller.ServletPath;
 import mark.butko.controller.checker.UserInputChecker;
+import mark.butko.controller.path.JSPPath;
+import mark.butko.controller.path.ServletPath;
 import mark.butko.model.entity.User;
-import mark.butko.model.service.UserAlreadyExistsException;
 import mark.butko.model.service.UserService;
+import mark.butko.model.service.exception.UserAlreadyExistsException;
 
 public class SignUpCommand implements Command {
 
@@ -20,43 +22,54 @@ public class SignUpCommand implements Command {
 	UserService userService = new UserService();
 
 	@Override
-	public String execute(HttpServletRequest request) {
-
-		String page = JSPPath.SIGN_UP;
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
-		String language = (String) request.getSession().getAttribute("language");
-		Locale locale = new Locale(language);
-
-		if (isCorrect(locale, name, email, password)) {
-			User user = new User(name, email, password);
-			try {
-				userService.add(user);
-				User registeredUser = userService.getByEmail(email);
-
-				if (registeredUser == null) {
-					LOGGER.info("userService add failed for: {}", user);
-				} else {
-					page = ServletPath.LOGIN;
-					LOGGER.info("new user created : {}", registeredUser);
-				}
-			} catch (UserAlreadyExistsException exception) {
-				request.setAttribute("errorMessage", "User with this email alredy exists");
-				LOGGER.info("Attempt to register with busy email : {}", email);
-			}
-		} else {
-			LOGGER.debug("incorect input");
+		if (name == null || email == null || password == null) {
+			forward(request, response, JSPPath.SIGN_UP);
+			return;
 		}
-		return page;
-	}
 
-	public boolean isCorrect(Locale locale, String name, String email, String password) {
-		UserInputChecker checker = new UserInputChecker(locale);
-		return checker.isEmailCorrect(email)
-				&& checker.isNameCorrect(name)
-				&& checker.isPasswordCorrect(password);
+		request.setAttribute("email", email);
+		request.setAttribute("name", name);
+
+		if (!UserInputChecker.isEmailCorrect(email)) {
+			request.setAttribute("email_error_message", "Invalid email");
+			forward(request, response, JSPPath.SIGN_UP);
+			return;
+		}
+
+		if (!UserInputChecker.isNameCorrect(name)) {
+			request.setAttribute("name_error_message", "Invalid name");
+			forward(request, response, JSPPath.SIGN_UP);
+			return;
+		}
+
+		if (!UserInputChecker.isPasswordCorrect(password)) {
+			request.setAttribute("password_error_message", "Invalid password");
+			forward(request, response, JSPPath.SIGN_UP);
+			return;
+		}
+
+		User user = new User(name, email, password);
+		try {
+			userService.add(user);
+			User registeredUser = userService.getByEmail(email);
+
+			if (registeredUser == null) {
+				LOGGER.info("registration failed for: {}", user);
+			} else {
+				LOGGER.info("new user created : {}", registeredUser);
+				redirect(request, response, ServletPath.LOGIN);
+				return;
+			}
+		} catch (UserAlreadyExistsException exception) {
+			request.setAttribute("email_exists_error_message", "Busy email");
+			LOGGER.info("Attempt to register with busy email : {}", email);
+		}
+		forward(request, response, JSPPath.SIGN_UP);
 	}
 }
