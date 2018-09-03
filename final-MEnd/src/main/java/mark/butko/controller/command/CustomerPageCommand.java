@@ -22,7 +22,7 @@ import mark.butko.model.criteria.SortCriteria;
 import mark.butko.model.criteria.impl.proposal.ProposalDateSortCriteria;
 import mark.butko.model.criteria.impl.proposal.ProposalFilterByUserCriteria;
 import mark.butko.model.criteria.impl.proposal.ProposalPageCriteria;
-import mark.butko.model.dao.impl.ProposalColumn;
+import mark.butko.model.dao.impl.column.ProposalColumn;
 import mark.butko.model.entity.Proposal;
 import mark.butko.model.entity.User;
 import mark.butko.model.service.ProposalService;

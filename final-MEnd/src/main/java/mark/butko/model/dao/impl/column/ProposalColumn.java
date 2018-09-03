@@ -1,4 +1,4 @@
-package mark.butko.model.dao.impl;
+package mark.butko.model.dao.impl.column;
 
 public final class ProposalColumn {
 

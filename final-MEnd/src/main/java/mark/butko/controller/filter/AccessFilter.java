@@ -26,6 +26,15 @@ import mark.butko.controller.path.ServletPath;
 import mark.butko.model.entity.User;
 import mark.butko.model.entity.User.Role;
 
+/**
+ * Implementation of Filter that is mapped to all application resources.
+ * Restricts access directly to jsp files; if user tries to access page but has
+ * not rights to do so. Allows to access resources files such as images, fonts,
+ * .css files to all users.
+ * 
+ * @author markg
+ * @see javax.servlet.Filter
+ */
 @WebFilter("/*")
 public class AccessFilter implements Filter {
 

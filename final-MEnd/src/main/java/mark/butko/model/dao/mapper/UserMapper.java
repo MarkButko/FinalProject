@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import mark.butko.model.dao.impl.UserColumn;
+import mark.butko.model.dao.impl.column.UserColumn;
 import mark.butko.model.entity.User;
 
 public class UserMapper implements Mapper<User> {

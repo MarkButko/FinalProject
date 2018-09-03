@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mark.butko.controller.checker.UserInputChecker;
 import mark.butko.controller.path.JSPPath;
 import mark.butko.controller.path.ServletPath;
+import mark.butko.model.checker.UserInputChecker;
 import mark.butko.model.entity.User;
 import mark.butko.model.service.UserService;
 import mark.butko.model.service.exception.UserAlreadyExistsException;

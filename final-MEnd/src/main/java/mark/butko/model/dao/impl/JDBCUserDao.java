@@ -1,9 +1,9 @@
 package mark.butko.model.dao.impl;
 
-import static mark.butko.model.dao.impl.UserMySQLQuery.FIND_ALL;
-import static mark.butko.model.dao.impl.UserMySQLQuery.ORDER_BY;
-import static mark.butko.model.dao.impl.UserMySQLQuery.WHERE;
-import static mark.butko.model.dao.impl.UserMySQLQuery.WITHDRAW;
+import static mark.butko.model.dao.impl.query.UserMySQLQuery.FIND_ALL;
+import static mark.butko.model.dao.impl.query.UserMySQLQuery.ORDER_BY;
+import static mark.butko.model.dao.impl.query.UserMySQLQuery.WHERE;
+import static mark.butko.model.dao.impl.query.UserMySQLQuery.WITHDRAW;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -21,6 +21,7 @@ import mark.butko.model.criteria.CriteriaUtil;
 import mark.butko.model.criteria.FilterCriteria;
 import mark.butko.model.criteria.SortCriteria;
 import mark.butko.model.dao.UserDao;
+import mark.butko.model.dao.impl.query.UserMySQLQuery;
 import mark.butko.model.dao.mapper.ProposalMapper;
 import mark.butko.model.dao.mapper.UserMapper;
 import mark.butko.model.entity.Proposal;

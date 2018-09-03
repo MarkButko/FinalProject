@@ -9,6 +9,8 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
+import mark.butko.model.checker.UserInputChecker;
+
 @RunWith(DataProviderRunner.class)
 public class UserInputCheckerTest {
 

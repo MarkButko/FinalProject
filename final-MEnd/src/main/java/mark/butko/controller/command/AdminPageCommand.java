@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import mark.butko.controller.path.JSPPath;
+import mark.butko.controller.path.ServletPath;
 import mark.butko.model.criteria.FilterCriteria;
 import mark.butko.model.criteria.SortCriteria;
 import mark.butko.model.criteria.impl.EmailSortCriteria;
@@ -27,6 +28,14 @@ import mark.butko.model.criteria.impl.RoleFilterCriteria;
 import mark.butko.model.entity.User;
 import mark.butko.model.service.UserService;
 
+/**
+ * Command that should be invoked from {@value ServletPath#ADMIN_PAGE}. It
+ * connects to {@link UserService} and retrieves data about all users based on
+ * sort type and filters that was passed as request parameters;
+ * 
+ * @author markg
+ * @see Command
+ */
 public class AdminPageCommand implements Command {
 	private static final Logger LOGGER = LogManager.getLogger(AdminPageCommand.class.getName());
 

@@ -1,14 +1,14 @@
 package mark.butko.model.dao.impl;
 
-import static mark.butko.model.dao.impl.ProposalMySQLQuery.COUNT_ALL;
-import static mark.butko.model.dao.impl.ProposalMySQLQuery.FIND_ALL;
-import static mark.butko.model.dao.impl.ProposalMySQLQuery.FIND_ALL_JOIN_ON_CUSTOMER;
-import static mark.butko.model.dao.impl.ProposalMySQLQuery.FIND_ALL_JOIN_ON_MANAGER;
-import static mark.butko.model.dao.impl.ProposalMySQLQuery.FIND_ALL_LEFT_JOIN_ON_CUSTOMER;
-import static mark.butko.model.dao.impl.ProposalMySQLQuery.FIND_ALL_LEFT_JOIN_ON_MANAGER;
-import static mark.butko.model.dao.impl.ProposalMySQLQuery.FIND_ALL_LEFT_JOIN_ON_MASTER;
-import static mark.butko.model.dao.impl.ProposalMySQLQuery.ORDER_BY;
-import static mark.butko.model.dao.impl.ProposalMySQLQuery.WHERE;
+import static mark.butko.model.dao.impl.query.ProposalMySQLQuery.COUNT_ALL;
+import static mark.butko.model.dao.impl.query.ProposalMySQLQuery.FIND_ALL;
+import static mark.butko.model.dao.impl.query.ProposalMySQLQuery.FIND_ALL_JOIN_ON_CUSTOMER;
+import static mark.butko.model.dao.impl.query.ProposalMySQLQuery.FIND_ALL_JOIN_ON_MANAGER;
+import static mark.butko.model.dao.impl.query.ProposalMySQLQuery.FIND_ALL_LEFT_JOIN_ON_CUSTOMER;
+import static mark.butko.model.dao.impl.query.ProposalMySQLQuery.FIND_ALL_LEFT_JOIN_ON_MANAGER;
+import static mark.butko.model.dao.impl.query.ProposalMySQLQuery.FIND_ALL_LEFT_JOIN_ON_MASTER;
+import static mark.butko.model.dao.impl.query.ProposalMySQLQuery.ORDER_BY;
+import static mark.butko.model.dao.impl.query.ProposalMySQLQuery.WHERE;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -30,6 +30,8 @@ import mark.butko.model.criteria.FilterCriteria;
 import mark.butko.model.criteria.PageCriteria;
 import mark.butko.model.criteria.SortCriteria;
 import mark.butko.model.dao.ProposalDao;
+import mark.butko.model.dao.impl.column.ProposalColumn;
+import mark.butko.model.dao.impl.query.ProposalMySQLQuery;
 import mark.butko.model.dao.mapper.CommentMapper;
 import mark.butko.model.dao.mapper.ProposalMapper;
 import mark.butko.model.dao.mapper.UserMapper;

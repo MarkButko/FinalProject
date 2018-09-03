@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-import mark.butko.model.dao.impl.ProposalColumn;
+import mark.butko.model.dao.impl.column.ProposalColumn;
 import mark.butko.model.entity.Proposal;
 
 public class ProposalMapper implements Mapper<Proposal> {

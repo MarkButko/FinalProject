@@ -9,13 +9,20 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mark.butko.controller.checker.UserInputChecker;
 import mark.butko.controller.path.ServletPath;
+import mark.butko.model.checker.UserInputChecker;
 import mark.butko.model.entity.Proposal;
 import mark.butko.model.service.ProposalService;
 
+/**
+ * Command that should be invoked to accept user proposal by some manager.
+ * Expected request parameters : price, proposal_id, manager_id Redirects user
+ * to manager page
+ * 
+ * @author markg
+ * @see Command
+ */
 public class AcceptProposalCommand implements Command {
-
 	private static final Logger LOGGER = LogManager.getLogger(AcceptProposalCommand.class.getName());
 
 	private ProposalService proposalService = ProposalService.getInstance();

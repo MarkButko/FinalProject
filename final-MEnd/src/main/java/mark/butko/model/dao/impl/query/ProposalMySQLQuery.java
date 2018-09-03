@@ -1,4 +1,4 @@
-package mark.butko.model.dao.impl;
+package mark.butko.model.dao.impl.query;
 
 public final class ProposalMySQLQuery {
 

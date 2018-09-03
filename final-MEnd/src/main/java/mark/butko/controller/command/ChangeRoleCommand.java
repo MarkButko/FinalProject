@@ -13,6 +13,15 @@ import mark.butko.model.entity.User;
 import mark.butko.model.service.UserService;
 import mark.butko.model.service.exception.UserDoesNotExist;
 
+/**
+ * Command that should be invoked by admin to set user role. Expected
+ * parameters: role as String, id of user Redirects on
+ * {@value ServletPath#ADMIN_PAGE}
+ * 
+ * @author markg
+ * @see Command
+ *
+ */
 public class ChangeRoleCommand implements Command {
 
 	private static final Logger LOGGER = LogManager.getLogger(ChangeRoleCommand.class.getName());

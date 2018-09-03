@@ -15,6 +15,15 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Implementation of Filter that is mapped to all application resources. Reads
+ * language parameter from user request and then as session attribute if request
+ * does not have one. If session does not have language attribute calls
+ * {@link ServletRequest#getLocale()} Then sets it as session attribute.
+ * 
+ * @author markg
+ * @see javax.servlet.Filter
+ */
 @WebFilter("/*")
 public class LanguageFilter implements Filter {
 
