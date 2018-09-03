@@ -14,7 +14,7 @@ public class UserInputChecker {
 
 	private static final Logger LOGGER = LogManager.getLogger(UserInputChecker.class.getName());
 
-	private static final String NAME_REGEX = "^[\\w\\W]{3,20}";
+	private static final String NAME_REGEX = "^[\\w\\W]{3,20}$";
 	private static final String PASSWORD_REGEX = "^[\\w\\W]{4,30}$";
 	private static final String EMAIL_REGEX = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
 	private static final String PRICE_REGEX = "[\\d]+";
