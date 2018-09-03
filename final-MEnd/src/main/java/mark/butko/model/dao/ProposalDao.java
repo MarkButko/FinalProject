@@ -2,10 +2,10 @@ package mark.butko.model.dao;
 
 import java.util.List;
 
-import mark.butko.dto.Comment;
 import mark.butko.model.criteria.FilterCriteria;
 import mark.butko.model.criteria.PageCriteria;
 import mark.butko.model.criteria.SortCriteria;
+import mark.butko.model.dto.Comment;
 import mark.butko.model.entity.Proposal;
 import mark.butko.model.entity.Proposal.Status;
 

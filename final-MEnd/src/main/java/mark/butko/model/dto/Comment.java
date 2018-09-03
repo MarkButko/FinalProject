@@ -1,4 +1,4 @@
-package mark.butko.dto;
+package mark.butko.model.dto;
 
 public class Comment {
 

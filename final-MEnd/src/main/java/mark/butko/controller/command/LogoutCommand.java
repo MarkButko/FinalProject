@@ -23,7 +23,6 @@ public class LogoutCommand implements Command {
 		if (session != null) {
 			User user = (User) session.getAttribute("user");
 			LOGGER.info("Session invalidate for user : {}", user.getEmail());
-			session.removeAttribute("user");
 			session.invalidate();
 		} else {
 			LOGGER.debug("Null session invalidation attemp");

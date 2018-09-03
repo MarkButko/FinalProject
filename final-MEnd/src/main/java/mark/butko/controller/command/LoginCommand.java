@@ -14,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import mark.butko.controller.path.JSPPath;
 import mark.butko.controller.path.ServletPath;
 import mark.butko.model.entity.User;
-import mark.butko.model.service.ProposalService;
 import mark.butko.model.service.UserService;
 import mark.butko.model.service.exception.LoginException;
 import mark.butko.model.service.exception.WrongEmailException;
@@ -25,11 +24,9 @@ public class LoginCommand implements Command {
 	private static final Logger LOGGER = LogManager.getLogger(LoginCommand.class.getName());
 
 	private UserService userService;
-	private ProposalService proposalService;
 
-	public LoginCommand(UserService userService, ProposalService proposalService) {
+	public LoginCommand(UserService userService) {
 		this.userService = userService;
-		this.proposalService = proposalService;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -44,13 +41,22 @@ public class LoginCommand implements Command {
 			return;
 		}
 
-		User user = (User) request.getSession().getAttribute("user");
 		Set<String> loggedUsers = (HashSet<String>) request
 				.getServletContext()
 				.getAttribute("loggedUsers");
-		if ((user != null) && loggedUsers.contains(user.getEmail())) {
+		User user = (User) request.getSession().getAttribute("user");
+
+		if (loggedUsers.contains(email)) { // then logged in user tries to login again
+											// (can access login page from other browser)
+			request.setAttribute("email_error_message", "User is already logged in");
+			request.setAttribute("email", email);
+			forward(request, response, JSPPath.LOGIN);
+			LOGGER.debug("Attempt to login by already logged in user : {}", email);
+			return;
+		}
+		if ((user != null) && (user.getRole() != User.Role.GUEST)) {// then logged in user tries to access login page
 			redirect(request, response, ServletPath.WELCOME_PAGE);
-			LOGGER.debug("Attempt to login by already logged in user : {}", user.getEmail());
+			LOGGER.debug("Attempt to login by already logged in user : {}", email);
 			return;
 		}
 

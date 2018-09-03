@@ -6,14 +6,14 @@
 	<Appenders>
 		<Console name="ConsoleAppender" target="SYSTEM_OUT">
 			<PatternLayout
-				pattern="[%highlight{%level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue}] %d{yyy-MM-dd HH:mm:ss.SSS} :: %logger{-2} :: %msg%n"/>
+				pattern="[%-5level] %tid %d{yyy-MM-dd HH:mm:ss.SSS} :: %logger{-2} :: %msg%n"/>
 		</Console>
 		<RollingFile name="RollingFileAppender"
 			fileName="${log-path}/mend.log"
 			filePattern="${log-path}/mend-%d{yyyy-MM-dd}-%i.log"
 			immediateFlush="true" append="true">
 			<PatternLayout
-				pattern="[%-5level] %d{yyy-MM-dd HH:mm:ss.SSS} :: %logger{-2} :: %msg%n" />
+				pattern="[%-5level] %tid %d{yyy-MM-dd HH:mm:ss.SSS} :: %logger{-2} :: %msg%n" />
 			<Policies>
 				<SizeBasedTriggeringPolicy size="20 KB" />
 			</Policies>

@@ -6,8 +6,8 @@
 <%@ include file="../../includes/before_nav.jsp"%>
 <%@ include file="../../includes/after_nav.jsp"%>
 
-<h1>${exception_type}</h1>
-<p>Status: ${status_code}</p>
-<p>Servlet: ${servlet_name}</p>
+<h1>${pageContext.errorData.throwable.class}</h1>
+<p>Status: ${pageContext.errorData.statusCode}</p>
+<p>URI: ${pageContext.errorData.requestURI}</p>
 
 <%@ include file="../../includes/footer.jsp"%>

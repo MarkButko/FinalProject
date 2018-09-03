@@ -28,18 +28,20 @@ public class SessionListener implements HttpSessionListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void sessionDestroyed(HttpSessionEvent se) {
-		LOGGER.info("Session Destroyed");
 		Set<String> loggedUsers = (HashSet<String>) se.getSession()
 				.getServletContext()
 				.getAttribute("loggedUsers");
 		User user = (User) se.getSession().getAttribute("user");
+		LOGGER.debug("logged users : before remove {}", loggedUsers);
 		if (user != null) {
 			String userEmail = user.getEmail();
 			loggedUsers.remove(userEmail);
 			se.getSession()
 					.getServletContext()
 					.setAttribute("loggedUsers", loggedUsers);
+			LOGGER.debug("logged users : after remove {}, removed: {}", loggedUsers, userEmail);
 		}
+		LOGGER.info("Session Destroyed");
 	}
 
 }

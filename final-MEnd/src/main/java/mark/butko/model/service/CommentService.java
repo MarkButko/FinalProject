@@ -2,9 +2,9 @@ package mark.butko.model.service;
 
 import java.util.List;
 
-import mark.butko.dto.Comment;
 import mark.butko.model.dao.DaoFactory;
 import mark.butko.model.dao.ProposalDao;
+import mark.butko.model.dto.Comment;
 
 public class CommentService {
 

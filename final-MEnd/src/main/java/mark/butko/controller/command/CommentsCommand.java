@@ -11,7 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import mark.butko.controller.path.JSPPath;
-import mark.butko.dto.Comment;
+import mark.butko.model.dto.Comment;
 import mark.butko.model.service.CommentService;
 
 public class CommentsCommand implements Command {

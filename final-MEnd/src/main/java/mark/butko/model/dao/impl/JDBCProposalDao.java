@@ -25,7 +25,6 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mark.butko.dto.Comment;
 import mark.butko.model.criteria.CriteriaUtil;
 import mark.butko.model.criteria.FilterCriteria;
 import mark.butko.model.criteria.PageCriteria;
@@ -34,6 +33,7 @@ import mark.butko.model.dao.ProposalDao;
 import mark.butko.model.dao.mapper.CommentMapper;
 import mark.butko.model.dao.mapper.ProposalMapper;
 import mark.butko.model.dao.mapper.UserMapper;
+import mark.butko.model.dto.Comment;
 import mark.butko.model.entity.Proposal;
 import mark.butko.model.entity.Proposal.Status;
 import mark.butko.model.entity.User;

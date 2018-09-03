@@ -57,20 +57,24 @@ nav + div {
 }
 
 
-input[value="previous"] {
+input[value="previous"],
+button[value="previous"] {
 	float: none;
-	margin-bottom: 20px;
+	margin-bottom: 20px !important;
 	background-color: #C1AC99FF !important;
 }
 
-input[value="next"] {
+input[value="next"],
+button[value="next"]  {
 	float: right;
-	margin-bottom: 20px;
+	margin-bottom: 20px !important;
 	background-color: #C1AC99FF !important;
 }
 
 input[value="previous"]:hover,
-input[value="next"]:hover {
+input[value="next"]:hover,
+button[value="previous"]:hover,
+button[value="next"]:hover {
 	background-color: #A78A70FF !important;
 }
 

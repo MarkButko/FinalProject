@@ -43,8 +43,8 @@
 					<form name="sort" action="${pageContext.request.contextPath}/get/admin/users" method="GET">
 						<div class="form-group">
 							<select name="sort-type" class="form-control">
-								<option value="email"><fmt:message key="option.sort.date" /></option>
-								<option value="date"><fmt:message key="option.sort.email" /></option>
+								<option value="email"><fmt:message key="option.sort.email" /></option>
+								<option value="date"><fmt:message key="option.sort.date" /></option>
 								<option value="name"><fmt:message key="option.sort.name" /></option>
 							</select>
 						</div>
