@@ -19,7 +19,7 @@ import mark.butko.model.service.exception.UserAlreadyExistsException;
 public class SignUpCommand implements Command {
 
 	private static final Logger LOGGER = LogManager.getLogger(SignUpCommand.class.getName());
-	UserService userService = new UserService();
+	UserService userService = UserService.getInstance();
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -19,8 +19,15 @@ import mark.butko.model.service.exception.WrongPasswordException;
 
 public class UserService {
 	private static final Logger LOGGER = LogManager.getLogger(UserService.class.getName());
+	private static final UserService INSTANCE = new UserService();
+	private DaoFactory daoFactory = DaoFactory.getInstance();
 
-	DaoFactory daoFactory = DaoFactory.getInstance();
+	private UserService() {
+	};
+
+	public static UserService getInstance() {
+		return INSTANCE;
+	}
 
 	public User login(String email, String password) throws LoginException {
 		Optional<User> user;

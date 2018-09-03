@@ -14,11 +14,7 @@ import mark.butko.model.service.ProposalService;
 public class CommentCommand implements Command {
 
 	private static final Logger LOGGER = LogManager.getLogger(CommentCommand.class.getName());
-	private ProposalService proposalService;
-
-	public CommentCommand(ProposalService proposalService) {
-		this.proposalService = proposalService;
-	}
+	private ProposalService proposalService = ProposalService.getInstance();
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {

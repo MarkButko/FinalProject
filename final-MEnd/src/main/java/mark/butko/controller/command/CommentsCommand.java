@@ -18,12 +18,8 @@ public class CommentsCommand implements Command {
 
 	private static final Logger LOGGER = LogManager.getLogger(CommentsCommand.class.getName());
 
-	private CommentService commentService;
+	private CommentService commentService = CommentService.getInstance();
 	private final int ROWS_ON_PAGE = 5;
-
-	public CommentsCommand(CommentService commentService) {
-		this.commentService = commentService;
-	}
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

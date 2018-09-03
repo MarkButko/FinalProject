@@ -18,11 +18,7 @@ public class LeaveProposalCommand implements Command {
 
 	private static final Logger LOGGER = LogManager.getLogger(LeaveProposalCommand.class.getName());
 
-	private ProposalService proposalService;
-
-	public LeaveProposalCommand(ProposalService proposalService) {
-		this.proposalService = proposalService;
-	}
+	private ProposalService proposalService = ProposalService.getInstance();
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

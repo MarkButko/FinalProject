@@ -34,16 +34,11 @@ public class ManagerPageCommand implements Command {
 	private static final String DEFAULT_SORT_TYPE = ProposalColumn.DATE;
 	private static final Integer ROWS_ON_PAGE = 5;
 
-	private ProposalService proposalService;
+	private ProposalService proposalService = ProposalService.getInstance();
 	private Map<String, SortCriteria> sortCriteriaMap = new HashMap<>();
 
 	{
 		sortCriteriaMap.put(ProposalColumn.DATE, new ProposalDateSortCriteria());
-	}
-
-	public ManagerPageCommand(ProposalService proposalService) {
-		super();
-		this.proposalService = proposalService;
 	}
 
 	@Override

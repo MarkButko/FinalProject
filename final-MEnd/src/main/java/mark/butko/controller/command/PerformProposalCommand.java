@@ -15,14 +15,8 @@ import mark.butko.model.service.exception.ProposalDoesNotExistsException;
 
 public class PerformProposalCommand implements Command {
 
-	ProposalService proposalService;
-	UserService userService;
-
-	public PerformProposalCommand(ProposalService proposalService, UserService userService) {
-		super();
-		this.proposalService = proposalService;
-		this.userService = userService;
-	}
+	ProposalService proposalService = ProposalService.getInstance();
+	UserService userService = UserService.getInstance();
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

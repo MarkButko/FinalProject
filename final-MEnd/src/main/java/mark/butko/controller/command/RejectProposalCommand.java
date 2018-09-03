@@ -16,12 +16,7 @@ public class RejectProposalCommand implements Command {
 
 	private static final Logger LOGGER = LogManager.getLogger(RejectProposalCommand.class.getName());
 
-	private ProposalService proposalService;
-
-	public RejectProposalCommand(ProposalService proposalService) {
-		super();
-		this.proposalService = proposalService;
-	}
+	private ProposalService proposalService = ProposalService.getInstance();
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -23,11 +23,7 @@ public class LoginCommand implements Command {
 
 	private static final Logger LOGGER = LogManager.getLogger(LoginCommand.class.getName());
 
-	private UserService userService;
-
-	public LoginCommand(UserService userService) {
-		this.userService = userService;
-	}
+	UserService userService = UserService.getInstance();
 
 	@SuppressWarnings("unchecked")
 	@Override

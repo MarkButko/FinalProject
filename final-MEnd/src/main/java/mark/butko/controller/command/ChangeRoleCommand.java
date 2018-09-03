@@ -17,12 +17,7 @@ public class ChangeRoleCommand implements Command {
 
 	private static final Logger LOGGER = LogManager.getLogger(ChangeRoleCommand.class.getName());
 
-	UserService userService;
-
-	public ChangeRoleCommand(UserService userService) {
-		super();
-		this.userService = userService;
-	}
+	UserService userService = UserService.getInstance();
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {

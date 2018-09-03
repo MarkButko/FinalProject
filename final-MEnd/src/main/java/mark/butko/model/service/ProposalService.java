@@ -21,7 +21,15 @@ import mark.butko.model.service.exception.ProposalDoesNotExistsException;
 public class ProposalService {
 
 	private static final Logger LOGGER = LogManager.getLogger(ProposalService.class.getName());
-	DaoFactory daoFactory = DaoFactory.getInstance();
+	private static final ProposalService INSTANCE = new ProposalService();
+	private DaoFactory daoFactory = DaoFactory.getInstance();
+
+	private ProposalService() {
+	};
+
+	public static ProposalService getInstance() {
+		return INSTANCE;
+	}
 
 	public void createProposal(String message, Integer userId) {
 		try (ProposalDao proposalDao = daoFactory.createProposalDao();

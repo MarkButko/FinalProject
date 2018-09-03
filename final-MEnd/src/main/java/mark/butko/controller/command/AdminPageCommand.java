@@ -30,7 +30,7 @@ import mark.butko.model.service.UserService;
 public class AdminPageCommand implements Command {
 	private static final Logger LOGGER = LogManager.getLogger(AdminPageCommand.class.getName());
 
-	private UserService userService;
+	UserService userService = UserService.getInstance();
 	private Map<String, SortCriteria> sortCriteriaMap = new HashMap<>();
 	private static final String DEFAULT_SORT_TYPE = "date";
 
@@ -38,11 +38,6 @@ public class AdminPageCommand implements Command {
 		sortCriteriaMap.put("name", new NameSortCriteria());
 		sortCriteriaMap.put("date", new RegistrationDateSortCriteria());
 		sortCriteriaMap.put("email", new EmailSortCriteria());
-	}
-
-	public AdminPageCommand(UserService userService) {
-		super();
-		this.userService = userService;
 	}
 
 	@Override
