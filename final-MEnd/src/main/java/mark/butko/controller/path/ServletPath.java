@@ -8,7 +8,7 @@ public final class ServletPath {
 	public static final String SIGN_UP = "/get/sign-up";
 	public static final String COMMENTS = "/get/customer/comments";
 	public static final String SERVLET_CONTEXT = "/final-MEnd";
-	public static final String PAGINATION = "/get/customer/proposals";
+	public static final String CUSTOMER_PROPOSALS = "/get/customer/proposals";
 	public static final String WELCOME_PAGE = "/get/welcomePage";
 	public static final String ADMIN_PAGE = "/get/admin/users";
 	public static final String MASTER_PAGE = "/get/master/acceptedProposals";

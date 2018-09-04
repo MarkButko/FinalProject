@@ -18,9 +18,7 @@
 							<label> <fmt:message key="label.role" />: </label>
 							<select name="role" class="form-control">
 								<c:forEach var="role" items="${roles}">
-									<c:if test="${role != 'GUEST'}">
-										<option value="${role}">${role}</option>
-									</c:if>
+									<option value="${role}">${role}</option>
 								</c:forEach>
 							</select>
 						</div>

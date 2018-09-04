@@ -30,7 +30,7 @@ public class LeaveProposalCommand implements Command {
 			forward(request, response, JSPPath.LEAVE_PROPOSAL);
 		} else {
 			proposalService.createProposal(message, user.getId());
-			redirect(request, response, ServletPath.PAGINATION);
+			redirect(request, response, ServletPath.CUSTOMER_PROPOSALS);
 		}
 	}
 

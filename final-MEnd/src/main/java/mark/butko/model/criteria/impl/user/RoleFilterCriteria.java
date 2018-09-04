@@ -1,4 +1,4 @@
-package mark.butko.model.criteria.impl;
+package mark.butko.model.criteria.impl.user;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

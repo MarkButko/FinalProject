@@ -163,8 +163,7 @@ public class ManagerPageCommand implements Command {
 		if (status != null && !status.isEmpty()) {
 			FilterCriteria statusFilterCriteria = new StatusFilterCriteria(Proposal.Status.valueOf(status));
 			filters.add(statusFilterCriteria);
-
-			session.setAttribute("status", status);
 		}
+		session.setAttribute("status_filter", status);
 	}
 }

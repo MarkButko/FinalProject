@@ -55,7 +55,7 @@ public class JDBCProposalDao implements ProposalDao {
 		List<Proposal> list = new ArrayList<>();
 
 		String query = FIND_ALL + (filters.isEmpty() ? "" : WHERE)
-				+ CriteriaUtil.createSQLString(filters)
+				+ CriteriaUtil.createSQLStringUsingAnd(filters)
 				+ ORDER_BY + order.getSQLString();
 
 		try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -78,14 +78,14 @@ public class JDBCProposalDao implements ProposalDao {
 
 		String queryWithCustomers = FIND_ALL_JOIN_ON_CUSTOMER
 				+ (filters.isEmpty() ? "" : WHERE)
-				+ CriteriaUtil.createSQLString(filters)
+				+ CriteriaUtil.createSQLStringUsingAnd(filters)
 				+ (sortCriteria == null ? "" : ORDER_BY)
 				+ sortCriteria.getSQLString();
 		LOGGER.debug("findMasterList: queryWithCustomers : {}", queryWithCustomers);
 
 		String queryWithManagers = FIND_ALL_JOIN_ON_MANAGER
 				+ (filters.isEmpty() ? "" : WHERE)
-				+ CriteriaUtil.createSQLString(filters)
+				+ CriteriaUtil.createSQLStringUsingAnd(filters)
 				+ (sortCriteria == null ? "" : ORDER_BY)
 				+ sortCriteria.getSQLString();
 		LOGGER.debug("findMasterList: queryWithManagers : {}", queryWithManagers);
@@ -146,7 +146,7 @@ public class JDBCProposalDao implements ProposalDao {
 
 		String queryWithCustomers = FIND_ALL_LEFT_JOIN_ON_CUSTOMER
 				+ (filters.isEmpty() ? "" : WHERE)
-				+ CriteriaUtil.createSQLString(filters)
+				+ CriteriaUtil.createSQLStringUsingAnd(filters)
 				+ (sortCriteria == null ? "" : ORDER_BY)
 				+ sortCriteria.getSQLString()
 				+ (pageCriteria == null ? "" : pageCriteria.getSQLString());
@@ -154,7 +154,7 @@ public class JDBCProposalDao implements ProposalDao {
 
 		String queryWithManagers = FIND_ALL_LEFT_JOIN_ON_MANAGER
 				+ (filters.isEmpty() ? "" : WHERE)
-				+ CriteriaUtil.createSQLString(filters)
+				+ CriteriaUtil.createSQLStringUsingAnd(filters)
 				+ (sortCriteria == null ? "" : ORDER_BY)
 				+ sortCriteria.getSQLString()
 				+ (pageCriteria == null ? "" : pageCriteria.getSQLString());
@@ -162,7 +162,7 @@ public class JDBCProposalDao implements ProposalDao {
 
 		String queryWithMasters = FIND_ALL_LEFT_JOIN_ON_MASTER
 				+ (filters.isEmpty() ? "" : WHERE)
-				+ CriteriaUtil.createSQLString(filters)
+				+ CriteriaUtil.createSQLStringUsingAnd(filters)
 				+ (sortCriteria == null ? "" : ORDER_BY)
 				+ sortCriteria.getSQLString()
 				+ (pageCriteria == null ? "" : pageCriteria.getSQLString());
@@ -447,7 +447,7 @@ public class JDBCProposalDao implements ProposalDao {
 	public Integer countPages(List<? extends FilterCriteria> filters) {
 		String query = COUNT_ALL
 				+ (filters.isEmpty() ? "" : WHERE)
-				+ CriteriaUtil.createSQLString(filters);
+				+ CriteriaUtil.createSQLStringUsingAnd(filters);
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 			CriteriaUtil.setParameters(filters, preparedStatement, 1);

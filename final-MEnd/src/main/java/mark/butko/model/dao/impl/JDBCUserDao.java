@@ -251,7 +251,7 @@ public class JDBCUserDao implements UserDao {
 		List<User> list = new ArrayList<>();
 
 		String query = FIND_ALL + (filters.isEmpty() ? "" : WHERE)
-				+ CriteriaUtil.createSQLString(filters)
+				+ CriteriaUtil.createSQLStringUsingAnd(filters)
 				+ ORDER_BY + order.getSQLString();
 
 		try (PreparedStatement statement = connection.prepareStatement(query)) {

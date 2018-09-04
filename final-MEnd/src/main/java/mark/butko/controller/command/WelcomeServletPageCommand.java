@@ -23,7 +23,7 @@ public class WelcomeServletPageCommand implements Command {
 	{
 		path.put(User.Role.ADMIN, ServletPath.ADMIN_PAGE);
 		path.put(User.Role.GUEST, ServletPath.LOGIN);
-		path.put(User.Role.CUSTOMER, ServletPath.PAGINATION);
+		path.put(User.Role.CUSTOMER, ServletPath.CUSTOMER_PROPOSALS);
 		path.put(User.Role.MANAGER, ServletPath.MANAGER_PAGE);
 		path.put(User.Role.MASTER, ServletPath.MASTER_PAGE);
 	}

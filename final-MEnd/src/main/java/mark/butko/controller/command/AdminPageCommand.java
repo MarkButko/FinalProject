@@ -20,11 +20,11 @@ import mark.butko.controller.path.JSPPath;
 import mark.butko.controller.path.ServletPath;
 import mark.butko.model.criteria.FilterCriteria;
 import mark.butko.model.criteria.SortCriteria;
-import mark.butko.model.criteria.impl.EmailSortCriteria;
-import mark.butko.model.criteria.impl.NameSortCriteria;
-import mark.butko.model.criteria.impl.RegistrationDateFilterCriteria;
-import mark.butko.model.criteria.impl.RegistrationDateSortCriteria;
-import mark.butko.model.criteria.impl.RoleFilterCriteria;
+import mark.butko.model.criteria.impl.user.EmailSortCriteria;
+import mark.butko.model.criteria.impl.user.NameSortCriteria;
+import mark.butko.model.criteria.impl.user.RegistrationDateFilterCriteria;
+import mark.butko.model.criteria.impl.user.RegistrationDateSortCriteria;
+import mark.butko.model.criteria.impl.user.RoleFilterCriteria;
 import mark.butko.model.entity.User;
 import mark.butko.model.service.UserService;
 
@@ -58,7 +58,7 @@ public class AdminPageCommand implements Command {
 		addIfExistsRoleFilter(request, filters);
 		addIfExistsDateFilter(request, filters);
 
-		SortCriteria sortCriteria = extractSortCriteria(request);
+		SortCriteria sortCriteria = extractSortCriterOrDefault(request);
 
 		List<User> users = userService.getByFiltersSortedList(filters, sortCriteria);
 
@@ -68,7 +68,7 @@ public class AdminPageCommand implements Command {
 		forward(request, response, JSPPath.ADMIN_PAGE);
 	}
 
-	private SortCriteria extractSortCriteria(HttpServletRequest request) {
+	private SortCriteria extractSortCriterOrDefault(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 
 		String sortType = Optional.ofNullable(request.getParameter("sort-type"))

@@ -9,11 +9,23 @@ import org.apache.logging.log4j.Logger;
 
 import mark.butko.model.dao.impl.query.UserMySQLQuery;
 
+/**
+ * Class that provides convinience methods to work with Criteria classes
+ * 
+ * @author markg
+ * @see Criteria
+ */
 public class CriteriaUtil {
 
 	private static final Logger LOGGER = LogManager.getLogger(CriteriaUtil.class.getName());
 
-	public static String createSQLString(List<? extends FilterCriteria> filters) {
+	/**
+	 * Collects filters queries using AND clause
+	 * 
+	 * @param filters
+	 * @return
+	 */
+	public static String createSQLStringUsingAnd(List<? extends FilterCriteria> filters) {
 		StringBuffer buffer = new StringBuffer();
 		String result = "";
 
@@ -27,6 +39,16 @@ public class CriteriaUtil {
 		return result;
 	}
 
+	/**
+	 * Sets parameters of statement that has query created using filters from
+	 * startIndex
+	 * 
+	 * @param filters
+	 * @param statement
+	 * @param startIndex
+	 * @return startIndex + amount of parameters set by filters
+	 * @throws SQLException
+	 */
 	public static int setParameters(List<? extends FilterCriteria> filters, PreparedStatement statement, int startIndex)
 			throws SQLException {
 		for (FilterCriteria criteria : filters) {
@@ -35,6 +57,16 @@ public class CriteriaUtil {
 		return startIndex;
 	}
 
+	/**
+	 * Sets parameters of statement that has query created using all passed
+	 * criterias from startIndex
+	 * 
+	 * @param filters
+	 * @param pageCriteria
+	 * @param statement
+	 * @param startIndex
+	 * @throws SQLException
+	 */
 	public static void setParameters(List<? extends FilterCriteria> filters, PageCriteria pageCriteria,
 			PreparedStatement statement, int startIndex) throws SQLException {
 		startIndex = setParameters(filters, statement, startIndex);

@@ -21,7 +21,7 @@
 						<label> <fmt:message key="label.status" />: </label>
 						<select name="status_filter" class="form-control">
 							<c:forEach var="status" items="${statuses}">
-								<option value="${status}">${status}</option>
+								<option value="${status}" ${status_filter == status ? 'selected' : ''}>${status}</option>
 							</c:forEach>
 						</select>
 
@@ -52,8 +52,13 @@
 						<p><fmt:message key="label.customer" />: ${proposal.author.name}</p>
 						<hr />
 						
-						<c:if test="${not empty master}">
+						<c:if test="${not empty proposal.master}">
 							<p><fmt:message key="label.master" />: ${proposal.master.name}</p>
+							<hr />
+						</c:if>
+
+						<c:if test="${not empty proposal.manager}">
+							<p><fmt:message key="label.manager" />: ${proposal.manager.name}</p>
 							<hr />
 						</c:if>
 

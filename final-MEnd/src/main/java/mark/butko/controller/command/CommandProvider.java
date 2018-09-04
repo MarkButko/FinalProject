@@ -3,6 +3,13 @@ package mark.butko.controller.command;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class that holds instances of commands saved in map where key is last part of
+ * requested URI
+ * 
+ * @author markg
+ *
+ */
 public class CommandProvider {
 	private static Map<String, Command> commands = new HashMap<>();
 
@@ -27,10 +34,23 @@ public class CommandProvider {
 	private CommandProvider() {
 	};
 
+	/**
+	 * 
+	 * 
+	 * @param key last part of requested URI
+	 * @return
+	 */
 	public static Command getCommand(String key) {
 		return commands.get(key);
 	}
 
+	/**
+	 * returns {@link WelcomeServletPageCommand} if map does nt contain key passed
+	 * as parameter
+	 * 
+	 * @param key
+	 * @return
+	 */
 	public static Command getCommandOrWelcomePage(String key) {
 		return commands.containsKey(key) ? commands.get(key) : commands.get("welcomePage");
 	}

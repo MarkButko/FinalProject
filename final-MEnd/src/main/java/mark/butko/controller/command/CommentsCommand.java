@@ -14,6 +14,14 @@ import mark.butko.controller.path.JSPPath;
 import mark.butko.model.dto.Comment;
 import mark.butko.model.service.CommentService;
 
+/**
+ * Command that is invoked if user wants to see comments. Expected request
+ * parameters : currentPage, futurePage (previous or next) Forwards user to
+ * {@value JSPPath#COMMENTS} page
+ * 
+ * @author markg
+ * @see Command
+ */
 public class CommentsCommand implements Command {
 
 	private static final Logger LOGGER = LogManager.getLogger(CommentsCommand.class.getName());

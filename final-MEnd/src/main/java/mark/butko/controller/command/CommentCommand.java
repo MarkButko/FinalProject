@@ -11,6 +11,14 @@ import org.apache.logging.log4j.Logger;
 import mark.butko.controller.path.ServletPath;
 import mark.butko.model.service.ProposalService;
 
+/**
+ * Command that is invoked if user wants to leave comment. Expected request
+ * parameters : id, comment, manager_id. Redirects user to
+ * {@value ServletPath#CUSTOMER_PROPOSALS} page
+ * 
+ * @author markg
+ * @see Command
+ */
 public class CommentCommand implements Command {
 
 	private static final Logger LOGGER = LogManager.getLogger(CommentCommand.class.getName());
@@ -26,6 +34,6 @@ public class CommentCommand implements Command {
 
 		LOGGER.info("userID = {}", id);
 
-		redirect(request, response, ServletPath.PAGINATION);
+		redirect(request, response, ServletPath.CUSTOMER_PROPOSALS);
 	}
 }
